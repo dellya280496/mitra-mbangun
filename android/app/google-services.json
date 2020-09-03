@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "279302484265",
+    "firebase_url": "https://m-bangun.firebaseio.com",
+    "project_id": "m-bangun",
+    "storage_bucket": "m-bangun.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279302484265:android:24b517eac30afba406c738",
+        "android_client_info": {
+          "package_name": "com.bangun.apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279302484265-jri7d5ttfk9a04gopddhup26d60nnfaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUo4m25p1l-cSHrc2jOUfngp-qapR3Amk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279302484265-jri7d5ttfk9a04gopddhup26d60nnfaa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "279302484265-ra9juc63i9lkvdf3jmea10jfsfai071c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bangun.apps"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
