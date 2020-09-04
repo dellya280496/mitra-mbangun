@@ -6,7 +6,6 @@ import 'package:apps/Utils/LocalBindings.dart';
 import 'package:apps/models/KecamatanM.dart';
 import 'package:apps/models/KotaM.dart';
 import 'package:apps/models/ProvinsiM.dart';
-import 'package:apps/models/SubKategoriM.dart';
 import 'package:apps/providers/DataProvider.dart';
 import 'package:apps/widget/alamat/WidgetAlamat.dart';
 import 'package:flushbar/flushbar.dart';
@@ -26,7 +25,6 @@ class WidgetFormRequest extends StatefulWidget {
 }
 
 class _WidgetFormRequestState extends State<WidgetFormRequest> {
-  var dataSubKategori = new List<SubKategoriM>();
   String idSubKategori;
   bool _saving = false;
   String idKota;

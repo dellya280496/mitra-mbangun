@@ -90,7 +90,6 @@ class ProfileScreen extends StatelessWidget {
                                       IconButton(
                                         onPressed: () {
                                           blocAuth.handleSignOut();
-                                          Provider.of<BlocOrder>(context).clearCart();
                                           Provider.of<BlocOrder>(context).clearCountOrder();
                                         },
                                         icon: Icon(Icons.exit_to_app, color: Colors.grey[400], size: 20.0),

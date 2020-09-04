@@ -3,7 +3,6 @@ import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
 import 'package:apps/providers/BlocProduk.dart';
 import 'package:apps/providers/BlocProfile.dart';
-import 'package:apps/screen/ProdukDetailScreen.dart';
 import 'package:apps/screen/ProdukScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:money2/money2.dart';
@@ -92,10 +91,8 @@ class WidgetProdukTerjual extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         blocProduk.getDetailProductByParam({'id': blocProduk.listProdukTerjual[j].id.toString(), 'aktif': '1'});
-                        Provider.of<BlocOrder>(context).getCart();
                         blocProfile.getCityParam({'id': blocProduk.listProdukTerjual[j].idKota.toString()});
                         blocOrder.getUlasanProduByParam({'id_produk': blocProduk.listProdukTerjual[j].id});
-                        Navigator.push(context, SlideRightRoute(page: ProdukDetailScreen()));
                       },
                       child: Column(
                         children: <Widget>[

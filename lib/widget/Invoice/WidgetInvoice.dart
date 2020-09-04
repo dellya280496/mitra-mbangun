@@ -39,7 +39,6 @@ class WidgetInvoice extends StatelessWidget {
                           Navigator.push(context, SlideRightRoute(page: WidgetProgress()));
                         } else {
                           if (dataProvider.invoiceListData[index].invoiceStatus == 'Pending') {
-                            dataProvider.getAllBank();
                             dataProvider.getAllMetodeTransfer();
                             Navigator.push(context, SlideRightRoute(page: WidgetTagihan()));
                           } else {

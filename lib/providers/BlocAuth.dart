@@ -1,6 +1,7 @@
 import 'package:apps/Repository/AuthRepository.dart';
 import 'package:apps/Repository/UserRepository.dart';
 import 'package:apps/Utils/LocalBindings.dart';
+import 'package:apps/models/JenisLayananMitra.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info/package_info.dart';
@@ -31,7 +32,6 @@ class BlocAuth extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   bool get isRegister => _isRegister;
-
 
   bool get isMitra => _isMitra;
 
@@ -107,13 +107,16 @@ class BlocAuth extends ChangeNotifier {
     _googleSignIn.signInSilently();
   }
 
+  List<JenisLayananMitra> _listJenisLayananMitra = [];
+
+  List<JenisLayananMitra> get listJenisLayananMitra => _listJenisLayananMitra;
+
   checkSession() async {
     checkVersionApp();
     _isLoading = false;
     notifyListeners();
     await Future.delayed(Duration(milliseconds: 1), () {
       _googleSignIn.isSignedIn().then((value) async {
-        print(_currentUser);
         if (value) {
           if (_currentUser == null) {
             getCurrentUser();
@@ -121,10 +124,10 @@ class BlocAuth extends ChangeNotifier {
             _isLoading = false;
             _isLogin = false;
             notifyListeners();
+            return false;
           } else {
             var queryString = {'username': _currentUser.email, 'id_google': _currentUser.id};
             var result = await AuthRepository().googleSign(queryString);
-            print(result);
             if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
               _connection = false;
               _isLoading = false;
@@ -141,33 +144,40 @@ class BlocAuth extends ChangeNotifier {
                   await Future.delayed(Duration(milliseconds: 1), () {
                     handleSignOut();
                   });
+                  return true;
                 } else {
-                  if(result['data']['aktif_mitra'] != '1'){
+                  if (result['data']['aktif_mitra'] != '1') {
+                    Iterable list = result['jenis_layanan_mitra'];
+                    _listJenisLayananMitra = list.map((model) => JenisLayananMitra.fromMap(model)).toList();
                     _connection = true;
                     _token = result['token'];
                     _idToko = result['data']['id_toko'].toString();
                     LocalStorage.sharedInstance.writeValue(key: 'id_toko', value: result['data']['id_toko']);
+                    LocalStorage.sharedInstance.writeValue(key: 'id_jenis_layanan', value: _listJenisLayananMitra.map((e) => e.id).toString());
                     LocalStorage.sharedInstance.writeValue(key: 'id_user_login', value: result['data']['id']);
                     _idUser = result['data']['id'];
-                    _isMitra=false;
+                    _isMitra = false;
                     _isRegister = false;
                     _isLoading = false;
                     _isLogin = true;
                     notifyListeners();
                     return true;
-                  }else{
-                  _connection = true;
-                  _token = result['token'];
-                  _idToko = result['data']['id_toko'].toString();
-                  LocalStorage.sharedInstance.writeValue(key: 'id_toko', value: result['data']['id_toko']);
-                  LocalStorage.sharedInstance.writeValue(key: 'id_user_login', value: result['data']['id']);
-                  _idUser = result['data']['id'];
-                  _isRegister = false;
-                  _isLoading = false;
-                  _isLogin = true;
-                  _isMitra=true;
-                  notifyListeners();
-                  return true;
+                  } else {
+                    Iterable list = result['jenis_layanan_mitra'];
+                    _listJenisLayananMitra = list.map((model) => JenisLayananMitra.fromMap(model)).toList();
+                    _connection = true;
+                    _token = result['token'];
+                    _idToko = result['data']['id_toko'].toString();
+                    LocalStorage.sharedInstance.writeValue(key: 'id_toko', value: result['data']['id_toko']);
+                    LocalStorage.sharedInstance.writeValue(key: 'id_jenis_layanan', value: _listJenisLayananMitra.map((e) => e.id).toString());
+                    LocalStorage.sharedInstance.writeValue(key: 'id_user_login', value: result['data']['id']);
+                    _idUser = result['data']['id'];
+                    _isRegister = false;
+                    _isLoading = false;
+                    _isLogin = true;
+                    _isMitra = true;
+                    notifyListeners();
+                    return true;
                   }
                 }
               } else {
@@ -176,11 +186,12 @@ class BlocAuth extends ChangeNotifier {
                 _isLoading = false;
                 _isLogin = false;
                 notifyListeners();
+                return false;
               }
             }
           }
         } else {
-          print('logout');
+          getCurrentUser();
           _connection = true;
           _isLogin = false;
           _isLoading = false;

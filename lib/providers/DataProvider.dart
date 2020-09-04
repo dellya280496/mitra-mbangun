@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:apps/Api/Api.dart';
 import 'package:apps/Utils/BottomAnimation.dart';
 import 'package:apps/Utils/LocalBindings.dart';
-import 'package:apps/models/BankM.dart';
-import 'package:apps/models/BidM.dart';
 import 'package:apps/models/GroupKategoriM.dart';
 import 'package:apps/models/InvoiceM.dart';
 import 'package:apps/models/KategoriFlagM.dart';
@@ -14,7 +12,6 @@ import 'package:apps/models/KotaM.dart';
 import 'package:apps/models/MetodeTransferM.dart';
 import 'package:apps/models/ProdukListM.dart';
 import 'package:apps/models/ProvinsiM.dart';
-import 'package:apps/models/SubKategoriM.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info/package_info.dart';
@@ -326,25 +323,6 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<SubKategoriM> _dataSubKategori = [];
-
-  List<SubKategoriM> get getDataSubKategori => _dataSubKategori;
-
-  void getSubKategoriByIdKategori(idKategori) async {
-    _isLoading = true;
-    notifyListeners();
-    Api.getAllSubKategoriByIdKategori(token, idKategori).then((response) {
-      Iterable list = json.decode(response.body)['data'];
-      _dataSubKategori = list.map((model) => SubKategoriM.fromMap(model)).toList();
-      _isLoading = false;
-      notifyListeners();
-    });
-  }
-
-  setDataSubKategori(List<SubKategoriM> data) {
-    _dataSubKategori = data;
-    notifyListeners();
-  }
 
   String _selectedSubKategori = null;
 
@@ -679,47 +657,6 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  List<BidM> _bidByUserIdAndStatusIdList = [];
-
-  List<BidM> get ListBidByUserIdAndStatusId => _bidByUserIdAndStatusIdList;
-
-  void getAllBidByUserIdAndStatusId(statusId) async {
-    _isLoading = true;
-    var queryParameters = {
-      'bidStatusId': statusId.toString(),
-      'userId': userId.toString(),
-    };
-    Api.getBidByParam(token, queryParameters).then((response) {
-      var result = json.decode(response.body);
-//      print(result['data']);
-      if (result['status'] == true) {
-        Iterable list = result['data'];
-        _bidByUserIdAndStatusIdList = list.map((model) => BidM.fromMap(model)).toList();
-        _isLoading = false;
-        notifyListeners();
-      } else {
-        _isLoading = false;
-        notifyListeners();
-      }
-    });
-  }
-
-//  var kategoriFlag = new List<KategoriM>();
-//
-//  List<KategoriM> get dataKategoriFlag => kategoriFlag;
-//
-//  void getKategoriByFlag(flag) async {
-//    _isLoading = true;
-//    notifyListeners();
-//    var queryParameters = {'produkkategoriflag': flag.toString(), 'produkkategoriaktif': '1'};
-//    Api.getAllKategoriByParam(token).then((response) {
-//      Iterable list = json.decode(response.body)['data'];
-//      kategoriFlag = list.map((model) => KategoriM.fromMap(model)).toList();
-//      _isLoading = false;
-//      notifyListeners();
-//    });
-//  }
-
 //  var kategoriFlag = new List<KategoriFlagM>();
   var kategoriGroupByFlag = new List<KategoriFlagM>();
 
@@ -745,20 +682,7 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  List<BidM> _listBidding = [];
 
-  List<BidM> get listBidding => _listBidding;
-
-  void getBiddingByProdukId(produkId) {
-    var queryParameters = {'produkId': produkId.toString()};
-    Api.getBidByParam(token, queryParameters).then((response) {
-      var result = json.decode(response.body);
-      Iterable list = result['data'];
-      _listBidding = list.map((model) => BidM.fromMap(model)).toList();
-      _isLoading = false;
-      notifyListeners();
-    });
-  }
 
   Map<String, dynamic> _dataKontrak;
 
@@ -802,22 +726,6 @@ class DataProvider extends ChangeNotifier {
       var result = json.decode(response.body);
       Iterable list = result['data'];
       _groupData = list.map((model) => GroupKategoriM.fromMap(model)).toList();
-      _isLoading = false;
-      notifyListeners();
-    });
-  }
-
-  List<BankM> _dataBank = [];
-
-  List<BankM> get dataBank => _dataBank;
-
-  void getAllBank() {
-    _isLoading = true;
-    Api.getAllBank(token).then((response) {
-      var result = json.decode(response.body);
-      imageCache.clear();
-      Iterable list = result['data'];
-      _dataBank = list.map((model) => BankM.fromMap(model)).toList();
       _isLoading = false;
       notifyListeners();
     });
@@ -888,7 +796,6 @@ class DataProvider extends ChangeNotifier {
       if (result['status']) {
         _isLoading = false;
 //        print(body);
-        getBiddingByProdukId(body['produkid']);
         notifyListeners();
       }
     });

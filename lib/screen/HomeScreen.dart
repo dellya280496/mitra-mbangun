@@ -11,8 +11,7 @@ import 'package:apps/screen/RequestScreen.dart';
 import 'package:apps/widget/Home/WidgetLokasi.dart';
 import 'package:apps/widget/Home/WidgetNews.dart';
 import 'package:apps/widget/home/WidgetKategori.dart';
-import 'package:apps/widget/home/WidgetOffialStore.dart';
-import 'package:apps/widget/home/WidgetRecentProduct.dart';
+import 'package:apps/widget/home/WidgetRecentProyek.dart';
 import 'package:apps/widget/home/WidgetSLider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           WidgetSlider(
                             blocProduk: blocProduk,
                           ),
-                          WidgetRecentProduct(
+                          WidgetRecentProyek(
                             blocProyek: blocProyek,
                           ),
                           WidgetNews(),

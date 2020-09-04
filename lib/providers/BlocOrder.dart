@@ -1,6 +1,5 @@
 import 'package:apps/Repository/OrderRepository.dart';
 import 'package:apps/Utils/LocalBindings.dart';
-import 'package:apps/models/Cart.dart';
 import 'package:apps/models/Order.dart';
 import 'package:apps/models/OrderProduk.dart';
 import 'package:apps/models/Ulasan.dart';
@@ -8,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 
 class BlocOrder extends ChangeNotifier {
   BlocOrder() {
-    getCart();
+//    getCart();
     setIdUser();
   }
 
@@ -45,9 +44,9 @@ class BlocOrder extends ChangeNotifier {
     print(idToko);
     if (id != null) {
       _id_user_login = id;
-      getOrderByIdUser(id);
-      getCountSaleByParam({'id_toko': idToko.toString()});
-      getCart();
+//      getOrderByIdUser(id);
+//      getCountSaleByParam({'id_toko': idToko.toString()});
+//      getCart();
     } else {
       _id_user_login = '0';
     }
@@ -83,7 +82,6 @@ class BlocOrder extends ChangeNotifier {
     var result = await OrderRepository().removeCart(body);
 //    print(result);
     if (result['meta']['success']) {
-      getCart();
     }
     notifyListeners();
   }
@@ -91,26 +89,19 @@ class BlocOrder extends ChangeNotifier {
   updateCart(body) async {
     var result = await OrderRepository().updateCart(body);
     if (result['meta']['success']) {
-      getCart();
       notifyListeners();
     }
   }
 
-  clearCart() {
-    _listCart = [];
-    notifyListeners();
-  }
 
   addToCart(body) async {
     var result = await OrderRepository().addToCart(body);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
       _connection = false;
-      getCart();
       notifyListeners();
       return false;
     } else {
       if (result['meta']['success']) {
-        getCart();
         _connection = true;
         notifyListeners();
         return true;
@@ -122,40 +113,6 @@ class BlocOrder extends ChangeNotifier {
     }
   }
 
-  List<Cart> _listCart = [];
-
-  List<Cart> get listCart => _listCart;
-
-  Future<dynamic> getCart() async {
-    _isLoading = true;
-    notifyListeners();
-    var id = await LocalStorage.sharedInstance.readValue('id_user_login');
-    var param = {'id_user_login': id.toString()};
-    var result = await OrderRepository().getCart(param);
-    if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
-      _connection = false;
-      _isLoading = false;
-      _listCart = [];
-      notifyListeners();
-      return result['data'];
-    } else {
-      if (result['meta']['success']) {
-        _isLoading = false;
-        _connection = true;
-        _listCart = [];
-        Iterable list = result['data'];
-        _listCart = list.map((model) => Cart.fromMap(model)).toList();
-        notifyListeners();
-        return result['data'];
-      } else {
-        _connection = false;
-        _isLoading = false;
-        _listCart = [];
-        notifyListeners();
-        return result['data'];
-      }
-    }
-  }
 
   List _listMetodePembayaran = [];
 
@@ -323,7 +280,6 @@ class BlocOrder extends ChangeNotifier {
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
       _connection = false;
       _isLoading = false;
-      _listCart = [];
       notifyListeners();
       return false;
     } else {
@@ -352,7 +308,6 @@ class BlocOrder extends ChangeNotifier {
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
       _connection = false;
       _isLoading = false;
-      _listCart = [];
       notifyListeners();
       return false;
     } else {

@@ -100,9 +100,6 @@ class _WidgetPengajuanByParamListState extends State<WidgetPengajuanByParamList>
                                         )));
                                 dataProvider.getAllInvoice(produkId);
                               } else {
-                                dataProvider.getKontrakByProdukId(produkId);
-                                dataProvider.getProdukById(produkId);
-                                dataProvider.getBiddingByProdukId(produkId);
                                 Navigator.push(context, SlideRightRoute(page: WidgetDetailPengajuanKontrak(param: widget.param)));
                               }
                             },

@@ -1,5 +1,4 @@
 import 'package:apps/providers/BlocProduk.dart';
-import 'package:apps/widget/Toko/component/WidgetGridKategoriByToko.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +40,6 @@ class WidgetKategoriByToko extends StatelessWidget {
             ],
           ),
         ),
-        WidgetGridKategoriByToko(blocProduk: blocProduk),
       ],
     );
   }

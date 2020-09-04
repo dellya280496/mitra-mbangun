@@ -1,5 +1,4 @@
 import 'package:apps/Utils/navigation_right.dart';
-import 'package:apps/models/Cart.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
 import 'package:apps/providers/BlocProfile.dart';
@@ -17,7 +16,6 @@ class CardRajaOngkir extends StatefulWidget {
     @required RoundedLoadingButtonController btnController,
     @required this.blocProfile,
     @required this.blocAuth,
-    @required this.listCart,
   })  : _btnController = btnController,
         super(key: key);
 
@@ -26,7 +24,6 @@ class CardRajaOngkir extends StatefulWidget {
   final RoundedLoadingButtonController _btnController;
   final BlocProfile blocProfile;
   final BlocAuth blocAuth;
-  final Cart listCart;
 
   @override
   _CardRajaOngkirState createState() => _CardRajaOngkirState();

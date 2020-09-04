@@ -93,7 +93,7 @@ class _ProyekScreenState extends State<ProyekScreen> with TickerProviderStateMix
                 ),
               )
             : Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(0),
                 child: Column(
                   children: <Widget>[
                     Expanded(

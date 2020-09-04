@@ -51,7 +51,7 @@ class UserRepository {
   }
 
   Future getAllProyek(param) async {
-    final response = await _helper.get("project/getAllByParam", param);
+    final response = await _helper.post("project/getAllProyekByParam", param);
     return response;
   }
 
@@ -98,6 +98,11 @@ class UserRepository {
     return response;
   }
 
+ Future getBidsByParam(param) async {
+    final response = await _helper.get("bids/getAllByParam", param);
+    return response;
+  }
+
   Future setDefaultAlamat(body) async {
     final response = await _helper.post("user/updateDefaultAlamat", body);
     return response;
@@ -105,6 +110,11 @@ class UserRepository {
 
   Future addCountViewProduk(body) async {
     final response = await _helper.post("produk/insertDilihat", body);
+    return response;
+  }
+
+  Future addBidding(body) async {
+    final response = await _helper.post("bids/insert", body);
     return response;
   }
 

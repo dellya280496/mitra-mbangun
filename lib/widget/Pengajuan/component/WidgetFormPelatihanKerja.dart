@@ -6,7 +6,6 @@ import 'package:apps/Utils/LocalBindings.dart';
 import 'package:apps/models/KecamatanM.dart';
 import 'package:apps/models/KotaM.dart';
 import 'package:apps/models/ProvinsiM.dart';
-import 'package:apps/models/SubKategoriM.dart';
 import 'package:apps/models/jenis_pengajuan.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +22,6 @@ class WidgetFormPelatihanKerja extends StatefulWidget {
 
 class _WidgetFormPelatihanKerjaState extends State<WidgetFormPelatihanKerja> {
   var dataJenisPengajuan = new List<JenisPengajuan>();
-  var dataSubKategori = new List<SubKategoriM>();
   String idSubKategori;
   bool _saving = false;
   String idKota;

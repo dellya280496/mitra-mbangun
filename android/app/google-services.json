@@ -15,6 +15,38 @@
       },
       "oauth_client": [
         {
+          "client_id": "279302484265-1saaisvmouicn51g4o6ln1ni49ho79b9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bangun.apps",
+            "certificate_hash": "8493207f7d0ce44c547c8507d5e1eec59c7bd041"
+          }
+        },
+        {
+          "client_id": "279302484265-uh4bh9i84nqpa87d1k7v90l0lb8hlb9m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bangun.apps",
+            "certificate_hash": "27a1e73828d41dce65fcd32fc36a6841a76bb564"
+          }
+        },
+        {
+          "client_id": "279302484265-aae0d3l6ppqm9f1ps087718i3k1o0mba.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bangun.apps",
+            "certificate_hash": "a114bacc109905eb753fab492adc2622348ae504"
+          }
+        },
+        {
+          "client_id": "279302484265-rl8mu2d30mcqbukip5q18hh46iahfpi0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bangun.apps",
+            "certificate_hash": "8a9e7853a0006e2f58e8046e5891ec51a6215189"
+          }
+        },
+        {
           "client_id": "279302484265-jri7d5ttfk9a04gopddhup26d60nnfaa.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -32,10 +64,54 @@
               "client_type": 3
             },
             {
-              "client_id": "279302484265-ra9juc63i9lkvdf3jmea10jfsfai071c.apps.googleusercontent.com",
+              "client_id": "279302484265-t1ecaon0p998ec0rrprvp07l7r3i9535.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.bangun.apps"
+                "bundle_id": "com.m-bangun.mitra"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279302484265:android:e5b2dd8928429ecf06c738",
+        "android_client_info": {
+          "package_name": "com.m_bangun.com.mitra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279302484265-55kdkb25jg3rf6pl87q34nhsgugkp669.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.m_bangun.com.mitra",
+            "certificate_hash": "8a9e7853a0006e2f58e8046e5891ec51a6215189"
+          }
+        },
+        {
+          "client_id": "279302484265-jri7d5ttfk9a04gopddhup26d60nnfaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUo4m25p1l-cSHrc2jOUfngp-qapR3Amk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279302484265-jri7d5ttfk9a04gopddhup26d60nnfaa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "279302484265-t1ecaon0p998ec0rrprvp07l7r3i9535.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.m-bangun.mitra"
               }
             }
           ]

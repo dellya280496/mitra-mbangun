@@ -242,7 +242,6 @@ class WidgetDetailPengajuanKontrak extends StatelessWidget {
                                 ? Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: WidgetListPekerja(
-                                      param: param,
                                     ),
                                   )
                                 : Container(),

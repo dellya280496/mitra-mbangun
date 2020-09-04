@@ -1,18 +1,19 @@
 import 'package:apps/Utils/LocalBindings.dart';
 import 'package:apps/Utils/navigation_right.dart';
+import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
 import 'package:apps/providers/BlocProfile.dart';
 import 'package:apps/providers/BlocProyek.dart';
-import 'package:apps/screen/ProdukDetailScreen.dart';
 import 'package:apps/screen/ProdukScreen.dart';
 import 'package:apps/screen/ProyekScreen.dart';
+import 'package:apps/widget/Project/WidgetDetailProyek.dart';
 import 'package:flutter/material.dart';
 import 'package:money2/money2.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class WidgetRecentProduct extends StatelessWidget {
-  WidgetRecentProduct({
+class WidgetRecentProyek extends StatelessWidget {
+  WidgetRecentProyek({
     Key key,
     @required this.blocProyek,
   }) : super(key: key);
@@ -23,6 +24,7 @@ class WidgetRecentProduct extends StatelessWidget {
     // TODO: implement build
     BlocProfile blocProfile = Provider.of<BlocProfile>(context);
     BlocOrder blocOrder = Provider.of<BlocOrder>(context);
+    BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     return Column(
       children: [
         Padding(
@@ -66,7 +68,7 @@ class WidgetRecentProduct extends StatelessWidget {
                         context,
                         SlideRightRoute(
                             page: ProyekScreen(
-                              namaKategori: 'Semua',
+                                namaKategori: 'Semua',
                                 param: param)));
                   },
                   child: Text(
@@ -92,7 +94,7 @@ class WidgetRecentProduct extends StatelessWidget {
               final IDR = Currency.create('IDR', 0, symbol: 'Rp', invertSeparators: true, pattern: 'S ###.###');
               var budget = blocProyek.listRecentProyek.isEmpty ? '0' : blocProyek.listRecentProyek[j].budget;
               var budgetFormat = Money.fromInt(budget == null ? 0 : int.parse(budget), IDR);
-             return Card(
+              return Card(
                 semanticContainer: true,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: InkWell(
@@ -100,7 +102,8 @@ class WidgetRecentProduct extends StatelessWidget {
                     blocProyek.getDetailProyekByParam({'id': blocProyek.listRecentProyek[j].id, 'aktif': '1'});
                     blocProfile.getCityParam({'id': blocProyek.listRecentProyek[j].idKota.toString()});
                     blocOrder.getUlasanProduByParam({'id_produk': blocProyek.listRecentProyek[j].id});
-                    Navigator.push(context, SlideRightRoute(page: ProdukDetailScreen()));
+                    blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser, 'id_projek': blocProyek.listRecentProyek[j].id});
+                    Navigator.push(context, SlideRightRoute(page: WidgetDetailProyek(param: blocProyek.listRecentProyek[j],)));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
@@ -155,10 +158,10 @@ class WidgetRecentProduct extends StatelessWidget {
                                         blocProyek.listRecentProyek.isEmpty
                                             ? Container()
                                             :  Image.asset(
-                                                    'assets/icons/verified.png',
-                                                    height: 10,
-                                                  )
-                                               ,
+                                          'assets/icons/verified.png',
+                                          height: 10,
+                                        )
+                                        ,
                                         Container(
                                           margin: EdgeInsets.only(left: 2),
                                           width: MediaQuery.of(context).size.width * 0.20,

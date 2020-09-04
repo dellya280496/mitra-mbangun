@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:apps/Repository/RajaOngkirRepository.dart';
 import 'package:apps/Repository/UserRepository.dart';
 import 'package:apps/Utils/LocalBindings.dart';
-import 'package:apps/models/CategioryByToko.dart';
 import 'package:apps/models/Categories.dart';
 import 'package:apps/models/Iklan.dart';
 import 'package:apps/models/OfficialStore.dart';
@@ -19,10 +18,6 @@ class BlocProduk extends ChangeNotifier {
 
   initLoad() {
     imageCache.clear();
-    getCurrentLocation();
-    getOfficialStore();
-    getCategory();
-    getRecentProduct();
     getIklan();
   }
 
@@ -201,7 +196,6 @@ class BlocProduk extends ChangeNotifier {
       _connection = true;
       _isLoading = false;
       getProdukTerjual(id);
-      getCategoryByToko(id);
       notifyListeners();
     }
   }
@@ -279,29 +273,6 @@ class BlocProduk extends ChangeNotifier {
     }
   }
 
-  List<CategioryByToko> _listCategoryByToko = [];
-
-  List<CategioryByToko> get listCategoryByToko => _listCategoryByToko;
-
-  getCategoryByToko(id_toko) async {
-    imageCache.clear();
-    _isLoading = true;
-    notifyListeners();
-    var param = {'id_toko': id_toko.toString()};
-    var result = await UserRepository().getCategoryByToko(param);
-    if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
-      _connection = false;
-      _isLoading = false;
-      _listCategoryByToko = [];
-      notifyListeners();
-    } else {
-      Iterable list = result['data'];
-      _listCategoryByToko = list.map((model) => CategioryByToko.fromMap(model)).toList();
-      _connection = true;
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
 
   List<Product> _listRecentProduct = [];
 

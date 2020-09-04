@@ -4,7 +4,6 @@ import 'package:apps/providers/BlocOrder.dart';
 import 'package:apps/providers/BlocProduk.dart';
 import 'package:apps/providers/BlocProfile.dart';
 import 'package:apps/providers/BlocProyek.dart';
-import 'package:apps/screen/ProdukDetailScreen.dart';
 import 'package:apps/widget/Produk/WidgetOverViewProduk.dart';
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
@@ -74,7 +73,6 @@ class _WidgetListProdukState extends State<WidgetListProduk> {
                   blocProduk.getDetailProductByParam({'id': blocProduk.listProducts[j].id.toString()});
                   blocProfile.getCityParam({'id': blocProduk.listProducts[j].idKota.toString()});
                   blocOrder.getUlasanProduByParam({'id_produk': blocProduk.listProducts[j].id});
-                  Navigator.push(context, SlideRightRoute(page: ProdukDetailScreen()));
                 },
                 child: WidgetOverViewProduk(
                   produkNama: blocProduk.listProducts[j].nama,

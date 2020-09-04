@@ -3,7 +3,6 @@ import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
 import 'package:apps/providers/BlocProduk.dart';
 import 'package:apps/providers/BlocProyek.dart';
-import 'package:apps/screen/ChekListScreen.dart';
 import 'package:apps/screen/HomeScreen.dart';
 import 'package:apps/screen/MyAdsScreen.dart';
 import 'package:apps/screen/ProdukScreen.dart';
@@ -93,7 +92,6 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
           child: currentScreen,
           bucket: bucket,
         ),
-
         backgroundColor: Colors.grey.withOpacity(0.3),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
@@ -111,10 +109,18 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                     setState(() {
                       blocAuth.checkSession();
                       blocProduk.initLoad();
-                      blocOrder.getCart();
-                      blocOrder.setIdUser();
-                      blocProyek.getRecentProyek();
-                      blocOrder.getCountSaleByParam({'id_toko': blocAuth.idToko.toString()});
+//                      blocOrder.setIdUser();
+                      var param = {
+                        'aktif': '1',
+                        'status': 'setuju',
+                        'status_pembayaran_survey': 'terbayar',
+                        'limit': '6',
+                        'offset': blocProyek.offset.toString(),
+                        'id_jenis_layanan': blocAuth.listJenisLayananMitra.map((e) => e.id).toString()
+                      };
+                      print(param);
+                      blocProyek.getRecentProyek(param);
+//                      blocOrder.getCountSaleByParam({'id_toko': blocAuth.idToko.toString()});
                       currentScreen = HomeScreen(); // if user taps on this dashboard tab will be active
                       currentTab = 0;
                     });
@@ -144,28 +150,20 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                 MaterialButton(
                   minWidth: 30,
                   onPressed: () async {
-
-                    String currentIdProvinsi = await LocalStorage.sharedInstance.readValue('idProvinsi');
-                    String currentIdKota = await LocalStorage.sharedInstance.readValue('idKota');
-                    String currentIdKecamatan = await LocalStorage.sharedInstance.readValue('idKecamatan');
+                    var result = blocAuth.checkSession();
                     var param = {
                       'aktif': '1',
                       'status': 'setuju',
                       'status_pembayaran_survey': 'terbayar',
-                      'limit': blocProduk.limit.toString(),
-                      'offset': blocProduk.offset.toString()
+                      'limit': blocProyek.limit.toString(),
+                      'offset': blocProyek.offset.toString(),
+                      'id_jenis_layanan': blocAuth.listJenisLayananMitra.map((e) => e.id).toString()
                     };
-//                    blocProduk.getAllProductByParam(param);
-
-                    blocProyek.getAllProyekByParam(param);
-                    blocAuth.checkSession();
-                    blocOrder.getCart();
-                    blocOrder.getCountSaleByParam({'id_toko': blocAuth.idToko.toString()});
+                    result.then((value) {
+                      blocProyek.getAllProyekByParam(param);
+                    });
                     setState(() {
-                      currentScreen = ProyekScreen(
-                          namaKategori: 'Semua',
-                          param: param
-                      ); // if user taps on this dashboard tab will be active
+                      currentScreen = ProyekScreen(namaKategori: 'Semua', param: param); // if user taps on this dashboard tab will be active
                       currentTab = 1;
                     });
                   },
@@ -192,9 +190,9 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                   onPressed: () {
                     setState(() {
                       blocAuth.checkSession();
-                      blocOrder.getCart();
                       blocOrder.setIdUser();
                       blocOrder.getCountSaleByParam({'id_toko': blocAuth.idToko.toString()});
+//                      blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser.toString(), 'status_proyek': 'setuju'});
                       currentScreen = MyAdsScreen(); // if user taps on this dashboard tab will be active
                       currentTab = 2;
                     });
@@ -211,23 +209,23 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                           ),
                           countAktivitas == 0
                               ? Icon(
-                            Icons.local_activity,
-                            size: 25,
-                            color: currentTab == 2 ? Colors.white : Colors.grey[400],
-                          )
+                                  Icons.local_activity,
+                                  size: 25,
+                                  color: currentTab == 2 ? Colors.white : Colors.grey[400],
+                                )
                               : new Positioned(
-                            top: 0.0,
-                            right: 0.0,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-                              alignment: Alignment.center,
-                              child: Text(
-                                countAktivitas.toString(),
-                                style: TextStyle(color: Colors.white, fontSize: 8),
-                              ),
-                            ),
-                          )
+                                  top: 0.0,
+                                  right: 0.0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      countAktivitas.toString(),
+                                      style: TextStyle(color: Colors.white, fontSize: 8),
+                                    ),
+                                  ),
+                                )
                         ],
                       ),
                       Text(
@@ -240,12 +238,10 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                     ],
                   ),
                 ),
-
                 MaterialButton(
                   minWidth: 30,
                   onPressed: () {
                     blocAuth.checkSession();
-                    blocOrder.getCart();
                     blocOrder.setIdUser();
                     blocOrder.getCountSaleByParam({'id_toko': blocAuth.idToko.toString()});
                     setState(() {
@@ -275,7 +271,6 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
