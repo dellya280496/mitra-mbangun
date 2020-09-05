@@ -27,10 +27,15 @@ class _WidgetListPenawaranState extends State<WidgetListPenawaran> {
     Future.delayed(Duration.zero).then((_) async {
       BlocProyek blocProyek = Provider.of<BlocProyek>(context);
       BlocAuth blocAuth = Provider.of<BlocAuth>(context);
-      blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser.toString(), 'status_proyek': 'setuju'});
+      if (blocAuth.survey) {
+        blocProyek.getBidsByParam({'status_proyek': 'setuju'});
+      }else{
+        blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser.toString(), 'status_proyek': 'setuju'});
+      }
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
@@ -96,7 +101,6 @@ class _WidgetListPenawaranState extends State<WidgetListPenawaran> {
                                   context,
                                   SlideRightRoute(
                                       page: WidgetDetailProyek(
-                                    param: blocProyek.listProyeks[0],
                                   )));
                             },
                             leading: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,
@@ -125,6 +129,10 @@ class _WidgetListPenawaranState extends State<WidgetListPenawaran> {
   onRefresh(context) {
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
-    blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser.toString(), 'status': '0'});
+    if (blocAuth.survey) {
+      blocProyek.getBidsByParam({'status_proyek': 'setuju'});
+    }else{
+      blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser.toString(), 'status_proyek': 'setuju'});
+    }
   }
 }

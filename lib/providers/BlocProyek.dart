@@ -35,15 +35,27 @@ class BlocProyek extends ChangeNotifier {
   initLoad() async {
     imageCache.clear();
     var idJenisLayanan = await LocalStorage.sharedInstance.readValue('id_jenis_layanan');
-    var param = {
-      'aktif': '1',
-      'status': 'setuju',
-      'status_pembayaran_survey': 'terbayar',
-      'limit': limit.toString(),
-      'offset': offset.toString(),
-      'id_jenis_layanan': idJenisLayanan.toString()
-    };
-    getRecentProyek(param);
+    var survey = await LocalStorage.sharedInstance.readValue('survey');
+    if (survey == '1') {
+      var param = {
+        'aktif': '1',
+        'status': "('survey','setuju')",
+        'status_pembayaran_survey': 'terbayar',
+        'limit': '6',
+        'offset': offset.toString(),
+      };
+      getRecentProyek(param);
+    } else {
+      var param = {
+        'aktif': '1',
+        'status': "('setuju')",
+        'status_pembayaran_survey': 'terbayar',
+        'limit': '6',
+        'offset': offset.toString(),
+        'id_jenis_layanan': idJenisLayanan.toString()
+      };
+     getRecentProyek(param);
+    }
     getIklan();
   }
 
@@ -144,12 +156,13 @@ class BlocProyek extends ChangeNotifier {
   getDetailProyekByParam(param) async {
     imageCache.clear();
     _isLoading = true;
+    _detailProyek = [];
     notifyListeners();
     var result = await UserRepository().getAllProyek(param);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
       _connection = false;
-      _isLoading = false;
       _detailProyek = [];
+      _isLoading = false;
       notifyListeners();
       return result['data'];
     } else {
@@ -158,8 +171,8 @@ class BlocProyek extends ChangeNotifier {
       addCountViewProduk(body);
       Iterable list = result['data'];
       _detailProyek = list.map((model) => Proyek.fromMap(model)).toList();
-      _isLoading = false;
       _connection = true;
+      _isLoading = false;
       notifyListeners();
       return result['data'];
     }
@@ -248,7 +261,7 @@ class BlocProyek extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     var result = await UserRepository().getAllProyek(param);
-    print(result);
+    print(param);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
       _connection = false;
       _isLoading = false;
@@ -297,6 +310,7 @@ class BlocProyek extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     var result = await UserRepository().getBidsByParam(param);
+    print(param);
     if (result['meta']['success']) {
       _isLoading = false;
       Iterable list = result['data'];
@@ -308,6 +322,28 @@ class BlocProyek extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       return false;
+    }
+  }
+  updateProyek(List<File> files, body) async {
+    _isLoading = true;
+    notifyListeners();
+    var result = await UserRepository().updateProyek(files, body);
+    if (result.toString() == '111' || result.toString() == '101' || result.toString() == '405' || result.toString() == 'Conncetion Error') {
+      _connection = false;
+      _isLoading = false;
+      notifyListeners();
+      return result;
+    } else {
+      if (result['meta']['success']) {
+        _isLoading = false;
+        _connection = true;
+        notifyListeners();
+        return result;
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return result;
+      }
     }
   }
 }

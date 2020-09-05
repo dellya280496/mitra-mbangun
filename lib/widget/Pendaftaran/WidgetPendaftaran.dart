@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:apps/Utils/BottomAnimation.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -42,18 +43,17 @@ class _PendaftaranState extends State<WidgetPendaftaran> {
       body: Builder(
         builder: (BuildContext context) {
           return WebviewScaffold(
-            url: 'https://mobile.m-bangun.com/pendaftaranmitra?email=' + blocAuth.currentUser.email.toString()+'&id='+blocAuth.currentUser.id.toString(),
+            url: 'https://mobile.m-bangun.com/pendaftaranmitra?email=' + blocAuth.currentUser.email.toString() + '&id=' + blocAuth.currentUser.id.toString(),
             withZoom: true,
             javascriptChannels: <JavascriptChannel>[
               JavascriptChannel(
                   name: 'Print',
                   onMessageReceived: (JavascriptMessage msg) {
                     print(msg.message);
-                    var result=json.decode(msg.message);
+                    var result = json.decode(msg.message);
 
                     if (result['meta']['success']) {
                       blocAuth.checkSession();
-//                      Navigator.pop(context);
                     }
                   }),
             ].toSet(),

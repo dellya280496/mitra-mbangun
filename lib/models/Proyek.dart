@@ -58,6 +58,7 @@ class Proyek {
   dynamic foto2;
   dynamic foto3;
   dynamic foto4;
+  String noHp;
 
   static Proyek fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
@@ -91,6 +92,7 @@ class Proyek {
     proyekBean.foto2 = map['foto2'];
     proyekBean.foto3 = map['foto3'];
     proyekBean.foto4 = map['foto4'];
+    proyekBean.noHp = map['no_hp'];
     return proyekBean;
   }
 
@@ -124,5 +126,6 @@ class Proyek {
     "foto2": foto2,
     "foto3": foto3,
     "foto4": foto4,
+    "no_hp": noHp,
   };
 }

@@ -17,6 +17,7 @@ class BlocAuth extends ChangeNotifier {
   String _idToko = '0';
   bool _isRegister = false;
   bool _isMitra = false;
+  bool _survey = false;
   String _errorMessage, _idUser, _token;
   bool _connection = true;
   bool _isNonActive = false;
@@ -36,6 +37,8 @@ class BlocAuth extends ChangeNotifier {
   bool get isMitra => _isMitra;
 
   bool get isLoading => _isLoading;
+
+  bool get survey => _survey;
 
   String get idUser => _idUser;
 
@@ -146,12 +149,14 @@ class BlocAuth extends ChangeNotifier {
                   });
                   return true;
                 } else {
-                  if (result['data']['aktif_mitra'] != '1') {
+                  if (result['data']['aktif_mitra'] == '0') {
                     Iterable list = result['jenis_layanan_mitra'];
                     _listJenisLayananMitra = list.map((model) => JenisLayananMitra.fromMap(model)).toList();
                     _connection = true;
                     _token = result['token'];
                     _idToko = result['data']['id_toko'].toString();
+                    LocalStorage.sharedInstance.writeValue(key: 'survey', value: result['data']['survey']);
+                    _survey = result['data']['survey'] == "1" ? true: false;
                     LocalStorage.sharedInstance.writeValue(key: 'id_toko', value: result['data']['id_toko']);
                     LocalStorage.sharedInstance.writeValue(key: 'id_jenis_layanan', value: _listJenisLayananMitra.map((e) => e.id).toString());
                     LocalStorage.sharedInstance.writeValue(key: 'id_user_login', value: result['data']['id']);
@@ -168,6 +173,8 @@ class BlocAuth extends ChangeNotifier {
                     _connection = true;
                     _token = result['token'];
                     _idToko = result['data']['id_toko'].toString();
+                    LocalStorage.sharedInstance.writeValue(key: 'survey', value: result['data']['survey']);
+                    _survey = result['data']['survey'] == "1" ? true: false;
                     LocalStorage.sharedInstance.writeValue(key: 'id_toko', value: result['data']['id_toko']);
                     LocalStorage.sharedInstance.writeValue(key: 'id_jenis_layanan', value: _listJenisLayananMitra.map((e) => e.id).toString());
                     LocalStorage.sharedInstance.writeValue(key: 'id_user_login', value: result['data']['id']);

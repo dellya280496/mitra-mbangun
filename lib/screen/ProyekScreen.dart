@@ -1,5 +1,7 @@
 import 'package:apps/Utils/LocalBindings.dart';
+import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocProyek.dart';
+import 'package:apps/widget/Pendaftaran/WidgetTunggu.dart';
 import 'package:apps/widget/Project/WidgetListProyek.dart';
 import 'package:apps/widget/filter/WIdgetFilter.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +67,7 @@ class _ProyekScreenState extends State<ProyekScreen> with TickerProviderStateMix
   Widget build(BuildContext context) {
     // TODO: implement build
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
+    BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: Scaffold(
@@ -81,31 +84,33 @@ class _ProyekScreenState extends State<ProyekScreen> with TickerProviderStateMix
             )
           ],
         ),
-        body: blocProyek.listProyeks.isEmpty
-            ? Center(
-                child: Sup(
-                  title: Text('Proyek tidak tersedia'),
-                  subtitle: Text('Silahkan pilih kategori lainnya.'),
-                  image: Image.asset(
-                    'assets/img/sad.png',
-                    height: 250,
-                  ),
-                ),
-              )
-            : Padding(
-                padding: EdgeInsets.all(0),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: WidgetListProyek(
-                        param: widget.param,
-                        idSubKategori: this.widget.idSubKategori,
+        body: !blocAuth.isMitra
+            ? WidgetTunggu()
+            : blocProyek.listProyeks.isEmpty
+                ? Center(
+                    child: Sup(
+                      title: Text('Proyek tidak tersedia'),
+                      subtitle: Text('Silahkan pilih kategori lainnya.'),
+                      image: Image.asset(
+                        'assets/img/sad.png',
+                        height: 250,
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.all(0),
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: WidgetListProyek(
+                            param: widget.param,
+                            idSubKategori: this.widget.idSubKategori,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
       ),
     );
   }

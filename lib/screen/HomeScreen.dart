@@ -10,6 +10,7 @@ import 'package:apps/providers/DataProvider.dart';
 import 'package:apps/screen/RequestScreen.dart';
 import 'package:apps/widget/Home/WidgetLokasi.dart';
 import 'package:apps/widget/Home/WidgetNews.dart';
+import 'package:apps/widget/Pendaftaran/WidgetTunggu.dart';
 import 'package:apps/widget/home/WidgetKategori.dart';
 import 'package:apps/widget/home/WidgetRecentProyek.dart';
 import 'package:apps/widget/home/WidgetSLider.dart';
@@ -68,33 +69,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       appBar: appBar,
       body: !blocProduk.connection
           ? WidgetErrorConection()
-          : Container(
-              margin: EdgeInsets.only(bottom: 50),
-              color: Colors.white10.withOpacity(0.2),
-              child: Stack(
-                children: [
-                  HeaderAnimation(),
-                  Container(
-                    margin: EdgeInsets.only(top: 100),
-                    height: MediaQuery.of(context).size.height - 100 - height - MediaQuery.of(context).padding.top - 50,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          WidgetSlider(
-                            blocProduk: blocProduk,
+              : Container(
+                  margin: EdgeInsets.only(bottom: 50),
+                  color: Colors.white10.withOpacity(0.2),
+                  child: Stack(
+                    children: [
+                      HeaderAnimation(),
+                      Container(
+                        margin: EdgeInsets.only(top: 100),
+                        height: MediaQuery.of(context).size.height - 100 - height - MediaQuery.of(context).padding.top - 50,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              WidgetSlider(
+                                blocProduk: blocProduk,
+                              ),
+                              WidgetRecentProyek(
+                                blocProyek: blocProyek,
+                              ),
+                              WidgetNews(),
+                            ],
                           ),
-                          WidgetRecentProyek(
-                            blocProyek: blocProyek,
-                          ),
-                          WidgetNews(),
-                        ],
+                        ),
                       ),
-                    ),
+                      WidgetKategori(),
+                    ],
                   ),
-                  WidgetKategori(),
-                ],
-              ),
-            ),
+                ),
     );
   }
 
@@ -134,39 +135,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           String btnLabelCancel = "Nanti";
           return Platform.isIOS
               ? WillPopScope(
-            onWillPop: () {},
-            child: new CupertinoAlertDialog(
-              title: Text(title),
-              content: Column(
-                children: <Widget>[
-                  Text("Pembaruan versi tersedia! $newVersion, versi saat ini adalah $currentVersion"),
-                ],
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(btnLabel),
-                  onPressed: () => _launchURL(APP_STORE_URL),
-                ),
-              ],
-            ),
-          )
+                  onWillPop: () {},
+                  child: new CupertinoAlertDialog(
+                    title: Text(title),
+                    content: Column(
+                      children: <Widget>[
+                        Text("Pembaruan versi tersedia! $newVersion, versi saat ini adalah $currentVersion"),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text(btnLabel),
+                        onPressed: () => _launchURL(APP_STORE_URL),
+                      ),
+                    ],
+                  ),
+                )
               : WillPopScope(
-            onWillPop: () {},
-            child: new CupertinoAlertDialog(
-              title: Text(title),
-              content: Column(
-                children: <Widget>[
-                  Text("Pembaruan versi tersedia! $newVersion, versi saat ini adalah $currentVersion"),
-                ],
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(btnLabel),
-                  onPressed: () => _launchURL(PLAY_STORE_URL),
-                ),
-              ],
-            ),
-          );
+                  onWillPop: () {},
+                  child: new CupertinoAlertDialog(
+                    title: Text(title),
+                    content: Column(
+                      children: <Widget>[
+                        Text("Pembaruan versi tersedia! $newVersion, versi saat ini adalah $currentVersion"),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text(btnLabel),
+                        onPressed: () => _launchURL(PLAY_STORE_URL),
+                      ),
+                    ],
+                  ),
+                );
         },
       );
     }
@@ -180,4 +181,3 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 }
-

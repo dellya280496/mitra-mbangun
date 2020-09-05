@@ -9,8 +9,10 @@ import 'package:apps/widget/Project/component/WidgetDetailBahan.dart';
 import 'package:apps/widget/Project/component/WidgetDetailLokasi.dart';
 import 'package:apps/widget/Project/component/WidgetListPekerja.dart';
 import 'package:apps/widget/Project/component/WidgetSurveyInformation.dart';
+import 'package:apps/widget/Project/component/WidgetUpdateProyek.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:html_editor/html_editor.dart';
 import 'package:money2/money2.dart';
 import 'package:pk_skeleton/pk_skeleton.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +31,7 @@ class WidgetDetailProyek extends StatefulWidget {
 class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
   final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  GlobalKey<HtmlEditorState> keyEditor = GlobalKey();
   String waktuPenawaran, catatan;
 
   @override
@@ -42,12 +44,13 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
   Widget build(BuildContext context) {
     // TODO: implement build
     DataProvider dataProvider = Provider.of<DataProvider>(context);
+    BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     var data = dataProvider.getdataProdukById;
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
     final IDR = Currency.create('IDR', 0, symbol: 'Rp', invertSeparators: true, pattern: 'S ###.###');
-    var budget = Money.fromInt(int.parse(blocProyek.detailProyek[0].budget.toString()), IDR).toString();
+    var budget = blocProyek.detailProyek.isEmpty ? '0' : Money.fromInt(int.parse(blocProyek.detailProyek[0].budget.toString()), IDR).toString();
     return Scaffold(
-      body: blocProyek.isLoading
+      body: blocProyek.detailProyek.isEmpty
           ? SingleChildScrollView(
               child: Container(
                 height: MediaQuery.of(context).size.height,
@@ -152,9 +155,9 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                                         ));
                                   },
                                   child: Image.network(
-                                    blocProyek.detailProyek[0].foto3 == null
+                                    blocProyek.detailProyek[0].foto2 == null
                                         ? dataProvider.fotoNull
-                                        : 'https://m-bangun.com/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto3,
+                                        : 'https://m-bangun.com/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto2,
                                     width: MediaQuery.of(context).size.width,
                                     fit: BoxFit.fitWidth,
                                   ),
@@ -180,27 +183,6 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                                     fit: BoxFit.fitWidth,
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        PageRouteTransition(
-                                          animationType: AnimationType.slide_down,
-                                          builder: (context) => PreviewFoto(
-                                            urlFoto: blocProyek.detailProyek[0].foto4 == null
-                                                ? dataProvider.fotoNull
-                                                : 'https://m-bangun.com/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto4,
-                                          ),
-                                        ));
-                                  },
-                                  child: Image.network(
-                                    blocProyek.detailProyek[0].foto4 == null
-                                        ? dataProvider.fotoNull
-                                        : 'https://m-bangun.com/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto4,
-                                    width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
                               ],
                               dotSize: 4.0,
                               dotSpacing: 15.0,
@@ -220,33 +202,34 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 7),
                               child: WidgetDeskripsiProyek(
-                                  created: blocProyek.detailProyek[0].createdAt,
-                                  lokasi: blocProyek.detailProyek[0].alamatLengkap,
-                                  nama: blocProyek.detailProyek[0].nama,
-                                  jenisLayanan: blocProyek.detailProyek[0].namaLayanan,
+                                  created: blocProyek.detailProyek.isEmpty ? '': blocProyek.detailProyek[0].createdAt,
+                                  lokasi: blocProyek.detailProyek.isEmpty ? '':blocProyek.detailProyek[0].alamatLengkap,
+                                  nama: blocProyek.detailProyek.isEmpty ? '':blocProyek.detailProyek[0].nama,
+                                  jenisLayanan:blocProyek.detailProyek.isEmpty ? '': blocProyek.detailProyek[0].namaLayanan,
+                                  noHp:blocProyek.detailProyek.isEmpty ? '': blocProyek.detailProyek[0].noHp,
                                   budget: budget),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: WidgetDetailLokasi(
-                                alamatLengkap: blocProyek.detailProyek[0].alamatLengkap,
+                                alamatLengkap: blocProyek.detailProyek.isEmpty ? Container(): blocProyek.detailProyek[0].alamatLengkap,
                               ),
                             ),
-                            widget.param.status == 'setuju'
-                                ? Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    child: WidgetDetailBahan(),
-                                  )
-                                : Container(),
-                            widget.param.status == 'setuju'
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: WidgetDetailBahan(
+                                param: blocProyek.detailProyek.isEmpty ? null: blocProyek.detailProyek[0],
+                              ),
+                            ),
+                            blocProyek.detailProyek.isEmpty ? Container(): blocProyek.detailProyek[0].status == 'setuju'
                                 ? Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: WidgetListPekerja(
-                                      param: widget.param,
+                                      param: blocProyek.detailProyek[0],
                                     ),
                                   )
                                 : Container(),
-                            widget.param.status == 'proses'
+                            blocProyek.detailProyek.isEmpty ? Container(): blocProyek.detailProyek[0].status == 'proses'
                                 ? Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: WidgetKontrak(
@@ -266,7 +249,7 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
         decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)), color: Colors.white),
         height: 55,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             FlatButton(
               height: 35,
@@ -275,14 +258,14 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                 borderRadius: BorderRadius.circular(18.0),
               ),
               child: Text(
-                'Apply',
+                blocAuth.survey ? 'Ubah Data & Terbitkan' : 'Apply',
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                blocProyek.listBids.isNotEmpty ? null : _showDialog(context);
+                blocProyek.listBids.isNotEmpty ? null : blocAuth.survey ? _showDialogUbahData(context) : _showDialog(context);
               },
               color: blocProyek.listBids.isNotEmpty ? Colors.grey : Colors.cyan[600],
-            )
+            ),
           ],
         ),
       ),
@@ -307,6 +290,7 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -393,7 +377,7 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                       height: 5,
                     ),
                     RoundedLoadingButton(
-                      child: Text('Apply', style: TextStyle(color: Colors.white)),
+                      child: Text(blocAuth.survey ? 'Terbitkan sekarang' : 'Apply', style: TextStyle(color: Colors.white)),
                       color: Colors.red,
                       controller: _btnController,
                       onPressed: () => bidding(),
@@ -406,6 +390,15 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
         },
       );
     }
+  }
+
+  void _showDialogUbahData(context) {
+    Navigator.push(
+        context,
+        PageRouteTransition(
+          animationType: AnimationType.slide_up,
+          builder: (context) => WidgetUpdateProyek(),
+        ));
   }
 
   bidding() {
@@ -429,6 +422,32 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
           Navigator.pop(context);
         }
       });
+    }
+  }
+
+  updateData() async{
+    BlocProyek blocProyek = Provider.of<BlocProyek>(context);
+    BlocAuth blocAuth = Provider.of<BlocAuth>(context);
+    _formKey.currentState.save();
+    _btnController.reset();
+    final deskripsi = await keyEditor.currentState.getText();
+    var body = {
+      'id_projek': blocProyek.detailProyek[0].id.toString(),
+      'id_user': blocProyek.detailProyek[0].idUserLogin.toString(),
+      'id_mitra': blocAuth.idUser.toString(),
+      'deskripsi': deskripsi.toString(),
+      'waktu_pengerjaan': waktuPenawaran.toString(),
+      'status': '0'
+    };
+    print(deskripsi);
+    if (_formKey.currentState.validate()) {
+//      var result = blocProyek.addBidding(body);
+//      result.then((value) {
+//        if (value) {
+//          blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser, 'id_projek': widget.param.id});
+//          Navigator.pop(context);
+//        }
+//      });
     }
   }
 }

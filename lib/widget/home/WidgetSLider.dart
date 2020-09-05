@@ -30,14 +30,14 @@ class WidgetSlider extends StatelessWidget {
             builder: (BuildContext context) {
               return InkWell(
                 onTap: () {
-                  blocProduk.getDetailStore(i.idToko);
-                  Navigator.push(
-                      context,
-                      SlideRightRoute(
-                          page: DetailTokoScreen(
-                        id: i.idToko,
-                        image: i.baner,
-                      )));
+//                  blocProduk.getDetailStore(i.idToko);
+//                  Navigator.push(
+//                      context,
+//                      SlideRightRoute(
+//                          page: DetailTokoScreen(
+//                        id: i.idToko,
+//                        image: i.baner,
+//                      )));
                 },
                 child: Card(
                   semanticContainer: true,

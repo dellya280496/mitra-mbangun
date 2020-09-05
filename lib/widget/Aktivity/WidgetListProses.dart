@@ -25,7 +25,11 @@ class _WidgetListProsesState extends State<WidgetListProses> {
     Future.delayed(Duration.zero).then((_) async {
       BlocProyek blocProyek = Provider.of<BlocProyek>(context);
       BlocAuth blocAuth = Provider.of<BlocAuth>(context);
+      if (blocAuth.survey) {
+        blocProyek.getBidsByParam({'status_proyek': 'proses'});
+      }else{
       blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser.toString(), 'status_proyek': 'proses'});
+      }
     });
     super.initState();
   }
@@ -95,7 +99,7 @@ class _WidgetListProsesState extends State<WidgetListProses> {
                                   context,
                                   SlideRightRoute(
                                       page: WidgetDetailProyek(
-                                    param: blocProyek.listProyeks[0],
+                                    param: blocProyek.listProyeks.isEmpty ? null : blocProyek.listProyeks[0],
                                   )));
                             },
                             leading: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,

@@ -53,23 +53,28 @@ class WidgetRecentProyek extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () async {
-                    String currentIdProvinsi = await LocalStorage.sharedInstance.readValue('idProvinsi');
-                    String currentIdKota = await LocalStorage.sharedInstance.readValue('idKota');
-                    String currentIdKecamatan = await LocalStorage.sharedInstance.readValue('idKecamatan');
-                    var param = {
-                      'aktif': '1',
-                      'limit': blocProyek.limit.toString(),
-                      'offset': blocProyek.offset.toString(),
-                      'status':'setuju',
-                      'status_pembayaran_survey':'terbayar'
-                    };
-                    blocProyek.getAllProyekByParam(param);
-                    Navigator.push(
-                        context,
-                        SlideRightRoute(
-                            page: ProyekScreen(
-                                namaKategori: 'Semua',
-                                param: param)));
+                    if (blocAuth.survey) {
+                      var param = {
+                        'aktif': '1',
+                        'status': "('survey','setuju')",
+                        'status_pembayaran_survey': 'terbayar',
+                        'limit': '6',
+                        'offset': blocProyek.offset.toString(),
+                      };
+                      blocProyek.getRecentProyek(param);
+                      Navigator.push(context, SlideRightRoute(page: ProyekScreen(namaKategori: 'Semua', param: param)));
+                    } else {
+                      var param = {
+                        'aktif': '1',
+                        'status': "('setuju')",
+                        'status_pembayaran_survey': 'terbayar',
+                        'limit': '6',
+                        'offset': blocProyek.offset.toString(),
+                        'id_jenis_layanan': blocAuth.listJenisLayananMitra.map((e) => e.id).toString()
+                      };
+                      blocProyek.getRecentProyek(param);
+                      Navigator.push(context, SlideRightRoute(page: ProyekScreen(namaKategori: 'Semua', param: param)));
+                    }
                   },
                   child: Text(
                     'Semua',
@@ -100,10 +105,13 @@ class WidgetRecentProyek extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     blocProyek.getDetailProyekByParam({'id': blocProyek.listRecentProyek[j].id, 'aktif': '1'});
-                    blocProfile.getCityParam({'id': blocProyek.listRecentProyek[j].idKota.toString()});
-                    blocOrder.getUlasanProduByParam({'id_produk': blocProyek.listRecentProyek[j].id});
                     blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser, 'id_projek': blocProyek.listRecentProyek[j].id});
-                    Navigator.push(context, SlideRightRoute(page: WidgetDetailProyek(param: blocProyek.listRecentProyek[j],)));
+                    Navigator.push(
+                        context,
+                        SlideRightRoute(
+                            page: WidgetDetailProyek(
+                          param: blocProyek.listRecentProyek[j],
+                        )));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
@@ -157,11 +165,10 @@ class WidgetRecentProyek extends StatelessWidget {
                                       children: [
                                         blocProyek.listRecentProyek.isEmpty
                                             ? Container()
-                                            :  Image.asset(
-                                          'assets/icons/verified.png',
-                                          height: 10,
-                                        )
-                                        ,
+                                            : Image.asset(
+                                                'assets/icons/verified.png',
+                                                height: 10,
+                                              ),
                                         Container(
                                           margin: EdgeInsets.only(left: 2),
                                           width: MediaQuery.of(context).size.width * 0.20,
@@ -179,7 +186,6 @@ class WidgetRecentProyek extends StatelessWidget {
                                   SizedBox(
                                     height: 1,
                                   ),
-
                                 ],
                               ),
                             ],
@@ -203,11 +209,9 @@ class WidgetRecentProyek extends StatelessWidget {
   }
 
   getPostImages(String url) {
-
-
     if (url == null) {
       return SizedBox();
-    }else{
+    } else {
       var urlImage = 'https://m-bangun.com/api-v2/assets/toko/' + url;
       return Image.network(
         urlImage,
@@ -218,6 +222,5 @@ class WidgetRecentProyek extends StatelessWidget {
         },
       );
     }
-
   }
 }

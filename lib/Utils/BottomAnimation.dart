@@ -109,17 +109,28 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                     setState(() {
                       blocAuth.checkSession();
                       blocProduk.initLoad();
-//                      blocOrder.setIdUser();
-                      var param = {
-                        'aktif': '1',
-                        'status': 'setuju',
-                        'status_pembayaran_survey': 'terbayar',
-                        'limit': '6',
-                        'offset': blocProyek.offset.toString(),
-                        'id_jenis_layanan': blocAuth.listJenisLayananMitra.map((e) => e.id).toString()
-                      };
-                      print(param);
-                      blocProyek.getRecentProyek(param);
+                      print(blocAuth.survey);
+                      if (blocAuth.survey) {
+                        var param = {
+                          'aktif': '1',
+                          'status': "('survey','setuju')",
+                          'status_pembayaran_survey': 'terbayar',
+                          'limit': '6',
+                          'offset': blocProyek.offset.toString(),
+                        };
+//                        print(blocAuth.listJenisLayananMitra.map((e) => e.id).toString());
+                        blocProyek.getRecentProyek(param);
+                      } else {
+                        var param = {
+                          'aktif': '1',
+                          'status': "('setuju')",
+                          'status_pembayaran_survey': 'terbayar',
+                          'limit': '6',
+                          'offset': blocProyek.offset.toString(),
+                          'id_jenis_layanan': blocAuth.listJenisLayananMitra.map((e) => e.id).toString()
+                        };
+                        blocProyek.getRecentProyek(param);
+                      }
 //                      blocOrder.getCountSaleByParam({'id_toko': blocAuth.idToko.toString()});
                       currentScreen = HomeScreen(); // if user taps on this dashboard tab will be active
                       currentTab = 0;
@@ -160,7 +171,26 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
                       'id_jenis_layanan': blocAuth.listJenisLayananMitra.map((e) => e.id).toString()
                     };
                     result.then((value) {
-                      blocProyek.getAllProyekByParam(param);
+                      if (blocAuth.survey) {
+                        var param = {
+                          'aktif': '1',
+                          'status': "('survey','setuju')",
+                          'status_pembayaran_survey': 'terbayar',
+                          'limit': blocProyek.limit.toString(),
+                          'offset': blocProyek.offset.toString(),
+                        };
+                        blocProyek.getAllProyekByParam(param);
+                      } else {
+                        var param = {
+                          'aktif': '1',
+                          'status': "('setuju')",
+                          'status_pembayaran_survey': 'terbayar',
+                          'limit': blocProyek.limit.toString(),
+                          'offset': blocProyek.offset.toString(),
+                          'id_jenis_layanan': blocAuth.listJenisLayananMitra.map((e) => e.id).toString()
+                        };
+                        blocProyek.getAllProyekByParam(param);
+                      }
                     });
                     setState(() {
                       currentScreen = ProyekScreen(namaKategori: 'Semua', param: param); // if user taps on this dashboard tab will be active

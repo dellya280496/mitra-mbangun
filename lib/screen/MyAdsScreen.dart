@@ -6,6 +6,7 @@ import 'package:apps/widget/Aktivity/WidgetListPenawaran.dart';
 import 'package:apps/widget/Aktivity/WidgetListSelesai.dart';
 import 'package:apps/widget/Login/LoginWidget.dart';
 import 'package:apps/widget/Aktivity/WidgetListProses.dart';
+import 'package:apps/widget/Pendaftaran/WidgetTunggu.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -73,7 +74,6 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
         ],
       ),
     );
-    DataProvider dataProvider = Provider.of<DataProvider>(context);
     return !blocAuth.connection
         ? WidgetErrorConection()
         : !blocAuth.isLogin
@@ -85,20 +85,25 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
                   page: '/BottomNavBar',
                 ),
               )
-            : DefaultTabController(
-                length: 3,
-                child: Scaffold(
-                  appBar: appBar,
-                  body: Container(
-                    child: TabBarView(
-                      children: [
-                        Container(child: WidgetListPenawaran(title: 'penawaran')),
-                        Container(child: WidgetListProses(title: 'proses')),
-                        Container(child: WidgetListSelesai(title: 'selesai',)),
-                      ],
+            : !blocAuth.isMitra
+                ? Scaffold(body: WidgetTunggu())
+                : DefaultTabController(
+                    length: 3,
+                    child: Scaffold(
+                      appBar: appBar,
+                      body: Container(
+                        child: TabBarView(
+                          children: [
+                            Container(child: WidgetListPenawaran(title: 'penawaran')),
+                            Container(child: WidgetListProses(title: 'proses')),
+                            Container(
+                                child: WidgetListSelesai(
+                              title: 'selesai',
+                            )),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              );
+                  );
   }
 }

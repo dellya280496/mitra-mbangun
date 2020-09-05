@@ -192,33 +192,32 @@ class ProfileScreen extends StatelessWidget {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: <Widget>[
-
                                         Divider(),
                                         Container(
                                           color: Colors.transparent,
                                           padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
                                           child: Column(
                                             children: <Widget>[
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  subheading('Penghasilan'),
-                                                ],
-                                              ),
-                                              SizedBox(height: 15.0),
-                                              InkWell(
-                                                onTap: () {
-                                                  blocProfile.getPenghasilanByParam({'id_toko': blocAuth.idToko.toString()});
-                                                  Navigator.push(context, SlideRightRoute(page: WidgetDetailPenghasilan()));
-                                                },
-                                                child: WidgetMyFavorite(
-                                                  icon: Icons.credit_card,
-                                                  iconBackgroundColor: Colors.green,
-                                                  title: 'Lihat Penghasilan',
-                                                  subtitle: 'Pembayaran penghasilan anda',
-                                                ),
-                                              ),
+//                                              Row(
+//                                                crossAxisAlignment: CrossAxisAlignment.center,
+//                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                                                children: <Widget>[
+//                                                  subheading('Penghasilan'),
+//                                                ],
+//                                              ),
+//                                              SizedBox(height: 15.0),
+//                                              InkWell(
+//                                                onTap: () {
+//                                                  blocProfile.getPenghasilanByParam({'id_toko': blocAuth.idToko.toString()});
+//                                                  Navigator.push(context, SlideRightRoute(page: WidgetDetailPenghasilan()));
+//                                                },
+//                                                child: WidgetMyFavorite(
+//                                                  icon: Icons.credit_card,
+//                                                  iconBackgroundColor: Colors.green,
+//                                                  title: 'Lihat Penghasilan',
+//                                                  subtitle: 'Pembayaran penghasilan anda',
+//                                                ),
+//                                              ),
                                             ],
                                           ),
                                         ),
