@@ -1,4 +1,5 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/providers/DataProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class _WidgetViewPdfState extends State<WidgetViewPdf> {
   loadDocument() async {
     await new Future.delayed(const Duration(seconds: 3));
     DataProvider dataProvider = Provider.of<DataProvider>(context);
-    document = await PDFDocument.fromURL('http://m-bangun.com/api/assets/pdf/file_rab_'+dataProvider.getdataProdukById['data'][0]['produkid']+'.pdf');
+    document = await PDFDocument.fromURL(baseURL+ '/api/assets/pdf/file_rab_'+dataProvider.getdataProdukById['data'][0]['produkid']+'.pdf');
     setState(() => _isLoading = false);
   }
 

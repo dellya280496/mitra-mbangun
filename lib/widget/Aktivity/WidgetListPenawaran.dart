@@ -1,6 +1,8 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
+import 'package:apps/providers/BlocProfile.dart';
 import 'package:apps/providers/BlocProyek.dart';
 import 'package:apps/widget/Aktivity/Pembelian/component/WidgetDetailOrderProdukPembelian.dart';
 import 'package:apps/widget/Project/WidgetDetailProyek.dart';
@@ -40,6 +42,7 @@ class _WidgetListPenawaranState extends State<WidgetListPenawaran> {
   Widget build(BuildContext context) {
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
+    BlocProfile blocProfile = Provider.of<BlocProfile>(context);
     final IDR = Currency.create('IDR', 0, symbol: 'Rp', invertSeparators: true, pattern: 'S ###.###');
     return Scaffold(
       body: blocProyek.isLoading
@@ -97,13 +100,15 @@ class _WidgetListPenawaranState extends State<WidgetListPenawaran> {
                             contentPadding: EdgeInsets.all(8),
                             onTap: () {
                               blocProyek.getDetailProyekByParam({'id': blocProyek.listBids[index].idProjek.toString()});
+                              blocProyek.getListPekerja({'id_projek': blocProyek.listBids[index].idProjek.toString() ,'status_proyek': 'setuju'});
+                              blocProfile.getSubDistrictById(blocProyek.listBids[index].idKecamatan);
                               Navigator.push(
                                   context,
                                   SlideRightRoute(
                                       page: WidgetDetailProyek(
                                   )));
                             },
-                            leading: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,
+                            leading: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,
                                 errorBuilder: (context, urlImage, error) {
                               print(error.hashCode);
                               return Image.asset('assets/logo.png');
@@ -112,11 +117,6 @@ class _WidgetListPenawaranState extends State<WidgetListPenawaran> {
                             subtitle: Text(
                               Jiffy(DateTime.parse(blocProyek.listBids[index].createdAt.toString())).format("dd/MM/yyyy"),
                               style: TextStyle(fontSize: 11, color: Colors.grey),
-                            ),
-                            trailing: Icon(
-                              Icons.watch_later,
-                              color: Colors.red,
-                              size: 20,
                             ),
                           ),
                         );

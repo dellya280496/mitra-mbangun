@@ -1,6 +1,5 @@
 import 'package:apps/Utils/ThemeChanger.dart';
 import 'package:apps/screen/ActivityScreen.dart';
-import 'package:apps/screen/BookingScreen.dart';
 import 'package:apps/screen/HomeScreen.dart';
 import 'package:apps/screen/ProfileScreen.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +19,6 @@ class _BottomMenuState extends State<BottomMenu> with TickerProviderStateMixin {
   var pages = [
     new HomeScreen(),
     new ActivityScreen(),
-    new BookingScreen(),
-    new BookingScreen(),
     new ProfileScreen()
   ];
 

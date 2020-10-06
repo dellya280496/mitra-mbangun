@@ -10,6 +10,7 @@ import 'package:apps/providers/DataProvider.dart';
 import 'package:apps/screen/RequestScreen.dart';
 import 'package:apps/widget/Home/WidgetLokasi.dart';
 import 'package:apps/widget/Home/WidgetNews.dart';
+import 'package:apps/widget/Login/LoginWidget.dart';
 import 'package:apps/widget/Pendaftaran/WidgetTunggu.dart';
 import 'package:apps/widget/home/WidgetKategori.dart';
 import 'package:apps/widget/home/WidgetRecentProyek.dart';
@@ -43,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    print('test');
   }
 
   @override
@@ -53,50 +55,61 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
-    DataProvider dataProvider = Provider.of<DataProvider>(context);
-    BlogCategories blogCategories = Provider.of<BlogCategories>(context);
     BlocProduk blocProduk = Provider.of<BlocProduk>(context);
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
+    BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     _showVersionDialog();
+    print(blocProyek.listProyeks.length);
+    print(blocProyek.listRecentProyek.length);
     AppBar appBar = AppBar(
       backgroundColor: Colors.cyan[700],
       elevation: 0,
       title: WidgetLokasi(),
     );
     double height = appBar.preferredSize.height;
-    return Scaffold(
-      appBar: appBar,
-      body: !blocProduk.connection
-          ? WidgetErrorConection()
-              : Container(
-                  margin: EdgeInsets.only(bottom: 50),
-                  color: Colors.white10.withOpacity(0.2),
-                  child: Stack(
-                    children: [
-                      HeaderAnimation(),
-                      Container(
-                        margin: EdgeInsets.only(top: 100),
-                        height: MediaQuery.of(context).size.height - 100 - height - MediaQuery.of(context).padding.top - 50,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              WidgetSlider(
-                                blocProduk: blocProduk,
+    return !blocAuth.isLogin
+        ? Container(
+            color: Colors.white,
+            child: LoginWidget(
+              primaryColor: Color(0xFFb16a085),
+              backgroundColor: Colors.white,
+              page: '/BottomNavBar',
+            ),
+          )
+        : !blocAuth.isMitra
+            ? WidgetTunggu()
+            : Scaffold(
+                appBar: appBar,
+                body: !blocProduk.connection
+                    ? WidgetErrorConection()
+                    : Container(
+                        margin: EdgeInsets.only(bottom: 50),
+                        color: Colors.white10.withOpacity(0.2),
+                        child: Stack(
+                          children: [
+                            HeaderAnimation(),
+                            Container(
+                              margin: EdgeInsets.only(top: 80),
+                              height: MediaQuery.of(context).size.height - 80 - height - MediaQuery.of(context).padding.top - 50,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    WidgetSlider(
+                                      blocProduk: blocProduk,
+                                    ),
+                                    WidgetRecentProyek(
+                                      blocProyek: blocProyek,
+                                    ),
+                                    WidgetNews(),
+                                  ],
+                                ),
                               ),
-                              WidgetRecentProyek(
-                                blocProyek: blocProyek,
-                              ),
-                              WidgetNews(),
-                            ],
-                          ),
+                            ),
+                            WidgetKategori(),
+                          ],
                         ),
                       ),
-                      WidgetKategori(),
-                    ],
-                  ),
-                ),
-    );
+              );
   }
 
   _openRequest() {

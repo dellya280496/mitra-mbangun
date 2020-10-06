@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/providers/BlocOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -50,7 +51,7 @@ class WidgetListPembayaran extends StatelessWidget {
                 child: ListTile(
                   contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   leading: Image.network(
-                    'https://m-bangun.com/api-v2/assets/bank/' + "${element['icon']}",
+                    baseURL+ '/api-v2/assets/bank/' + "${element['icon']}",
                     height: 50,
                     width: 50,
                   ),

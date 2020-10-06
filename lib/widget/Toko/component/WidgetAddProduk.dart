@@ -634,7 +634,7 @@ class _WidgetAddProdukState extends State<WidgetAddProduk> {
   }
 
   void _getImage(BuildContext context, ImageSource source, param) async {
-    File image = await ImagePicker.pickImage(source: source, maxHeight: 1000, maxWidth: 1000, imageQuality: 50);
+    File image = await ImagePicker.pickImage(source: source, maxHeight: 1500, maxWidth: 1500, imageQuality: 50);
     if (param == 'foto') {
       setState(() {
         foto = image;

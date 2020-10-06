@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/SnacbarLauncher.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocProduk.dart';
@@ -190,7 +191,7 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
                                             width: 100.0,
                                             height: 100.0,
                                             child: ClipOval(
-                                              child: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProfile.dataToko['foto'], fit: BoxFit.contain,
+                                              child: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProfile.dataToko['foto'], fit: BoxFit.contain,
                                                   errorBuilder: (context, urlImage, error) {
                                                 print(error.hashCode);
                                                 return Image.asset('assets/logo.png');
@@ -242,7 +243,7 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
                                     : blocProfile.dataToko['foto_sampul'] == null
                                         ? Container()
                                         : Image.network(
-                                            'https://m-bangun.com/api-v2/assets/toko/' + blocProfile.dataToko['foto_sampul'],
+                                            baseURL+ '/api-v2/assets/toko/' + blocProfile.dataToko['foto_sampul'],
                                             height: 200,
                                           ),
                                 Container(
@@ -301,24 +302,24 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
       'id_provinsi': blocProfile.id_provice,
     };
     List<File> files = [foto, foto1];
-    var result = await blocProfile.updateToko(files, body);
-    if (result['meta']['success']) {
-      setState(() {
-        success = true;
-      });
-      await Future.delayed(Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-    } else {
-      setState(() {
-        error = true;
-      });
-      await Future.delayed(Duration(seconds: 1), () {
-        setState(() {
-          error = false;
-        });
-      });
-    }
+//    var result = await blocProfile.updateToko(files, body);
+//    if (result['meta']['success']) {
+//      setState(() {
+//        success = true;
+//      });
+//      await Future.delayed(Duration(seconds: 1), () {
+//        Navigator.pop(context);
+//      });
+//    } else {
+//      setState(() {
+//        error = true;
+//      });
+//      await Future.delayed(Duration(seconds: 1), () {
+//        setState(() {
+//          error = false;
+//        });
+//      });
+//    }
   }
 
   void _openImagePickerModal(BuildContext context, param) {
@@ -360,6 +361,7 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
   void _getImage(BuildContext context, ImageSource source, param) async {
     File image = await ImagePicker.pickImage(
       source: source,
+      maxHeight: 640, maxWidth: 640,
       imageQuality: 50,
     );
     if (param == 'foto') {

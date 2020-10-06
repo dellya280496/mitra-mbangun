@@ -34,7 +34,7 @@ class WidgetKategori extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           )),
                       Text(
-                        'Dapatkan proyek terverifikasi anda di m-bangun,\nProyek terverifikasi oleh tim m-bangun melalui survey langsung ke user',
+                        'Dapatkan proyek terverifikasi anda di Mbangun.',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.white,

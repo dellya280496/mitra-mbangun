@@ -1,18 +1,18 @@
 /// id : "33"
-/// nama : "Coba"
-/// nama_layanan : "Perbaikan pagar"
+/// nama : "Pengadaan Beton"
+/// nama_layanan : "perbaikan kamar mandi"
 /// no_order : "PROJ-1598923901"
-/// deskripsi : "Sdafa"
-/// budget : null
+/// deskripsi : "<p>Termin 3 kali</p><p>Pembayaran pertama 30%</p><p><br></p>"
+/// budget : "9000000"
 /// tipe_lokasi : "rumah"
 /// latitude : null
 /// longitude : null
 /// alamat_lengkap : "Dafsa"
 /// biaya_survey : "150000"
-/// id_jenis_layanan : "1"
+/// id_jenis_layanan : "2"
 /// tgl_survey : null
-/// status : "setuju"
-/// created_at : "2020-09-02 09:01:05"
+/// status : "survey"
+/// created_at : "2020-09-06 11:58:24"
 /// id_user_login : "45"
 /// status_pembayaran_survey : "terbayar"
 /// tgl_max_bid : "2020-09-01"
@@ -23,10 +23,16 @@
 /// komisi_survey : "50000"
 /// token_va : "66e80b2a-b2db-47ba-9187-c7671e93a87b"
 /// batas_bayar : "2020-09-01 10:32:01.000000"
-/// foto1 : null
-/// foto2 : null
-/// foto3 : null
+/// foto1 : "scaled_image_picker7316254326125160857.jpg"
+/// foto2 : "image_picker_DB965037-30D7-4562-9EB5-258558A966EB-2480-000004A8FFB2C21C.jpg"
+/// foto3 : "null"
 /// foto4 : null
+/// no_hp : "081331339866"
+/// fileLaporanAkhir : "0"
+/// termin2 : "0"
+/// termin3 : "0"
+/// retensi : "0"
+/// termin : "0"
 
 class Proyek {
   String id;
@@ -34,7 +40,7 @@ class Proyek {
   String namaLayanan;
   String noOrder;
   String deskripsi;
-  dynamic budget;
+  String budget;
   String tipeLokasi;
   dynamic latitude;
   dynamic longitude;
@@ -54,12 +60,13 @@ class Proyek {
   String komisiSurvey;
   String tokenVa;
   String batasBayar;
-  dynamic foto1;
-  dynamic foto2;
-  dynamic foto3;
+  String foto1;
+  String foto2;
+  String foto3;
   dynamic foto4;
   String noHp;
-
+  String fileLaporanAkhir;
+  
   static Proyek fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
     Proyek proyekBean = Proyek();
@@ -93,6 +100,7 @@ class Proyek {
     proyekBean.foto3 = map['foto3'];
     proyekBean.foto4 = map['foto4'];
     proyekBean.noHp = map['no_hp'];
+    proyekBean.fileLaporanAkhir = map['file_laporan_akhir'];
     return proyekBean;
   }
 
@@ -127,5 +135,6 @@ class Proyek {
     "foto3": foto3,
     "foto4": foto4,
     "no_hp": noHp,
+    "file_laporan_akhir": fileLaporanAkhir
   };
 }

@@ -424,8 +424,6 @@ class _WidgetDetailProdukState extends State<WidgetDetailProduk> {
                               hintText: 'Rp 100,000',
                               labelText: 'Ajukan Budget anda',
                               errorText: 'ganti jika anda memiliki budget penawaran',
-//                          hintStyle: TextStyle(fontSize: 12, color: Colors.grey),
-//                          labelStyle: TextStyle(fontSize: 14, color: Colors.grey),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xffb16a085),

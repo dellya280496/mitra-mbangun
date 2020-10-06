@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/widget/Pengajuan/component/WidgetCardMenu.dart';
@@ -72,7 +73,7 @@ class WidgetMenu extends StatelessWidget {
 
   _openScreen(String s, BuildContext context) {
     if (s == 'pengajuan_toko') {
-      _launchURL('https://mobile.m-bangun.com', context);
+      _launchURL(baseURLMobile, context);
     }
   }
 }

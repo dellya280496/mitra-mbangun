@@ -3,9 +3,11 @@ import 'package:apps/Utils/TitleHeader.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/models/KotaM.dart';
 import 'package:apps/models/ProvinsiM.dart';
+import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocProduk.dart';
 import 'package:apps/providers/BlocProfile.dart';
 import 'package:apps/providers/DataProvider.dart';
+import 'package:apps/screen/Notification.dart';
 import 'package:apps/widget/Home/WidgetSelectLokasi.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +44,7 @@ class _WidgetLokasiState extends State<WidgetLokasi> {
   Widget build(BuildContext context) {
     // TODO: implement build
     BlocProduk blocProduk = Provider.of<BlocProduk>(context);
+    BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     var kecamatan = blocProduk.namaKecamatan == null ? '' : blocProduk.namaKecamatan.toLowerCase();
     var kota = blocProduk.namaKota == null ? '' : blocProduk.namaKota.toLowerCase();
     var provinsi = blocProduk.namaProvinsi == null ? '' : blocProduk.namaProvinsi.toLowerCase();
@@ -72,12 +75,43 @@ class _WidgetLokasiState extends State<WidgetLokasi> {
               width: 5,
             ),
             TitleHeader(
-              title: "m-Bangun",
+              title: "Mitra Mbangun",
               color: Colors.white,
+            ),
+          ],
+        ),
+        Stack(
+          children: <Widget>[
+            IconButton(
+              onPressed: () {
+                blocAuth.getNotification();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotificationScreen(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.white,
+              ),
+            ),
+            new Positioned(
+              top: 5.0,
+              right: 5.0,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                alignment: Alignment.center,
+                child: Text(
+                  blocAuth.coundNotification.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 8),
+                ),
+              ),
             )
           ],
         ),
-
       ],
     );
   }

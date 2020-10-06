@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/Utils/values/colors.dart';
 import 'package:apps/providers/BlocAuth.dart';
@@ -66,7 +67,7 @@ class TokoSayaScreen extends StatelessWidget {
                     width: 60.0,
                     height: 60.0,
                     child: ClipOval(
-                      child: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProfile.dataToko['foto'].toString(), fit: BoxFit.contain,
+                      child: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProfile.dataToko['foto'].toString(), fit: BoxFit.contain,
 //                            width: 30,
                           errorBuilder: (context, urlImage, error) {
                         print(error.hashCode);
@@ -157,7 +158,7 @@ class TokoSayaScreen extends StatelessWidget {
                                                 // ignore: unrelated_type_equality_checks
                                                 enabled: blocProduk.listProducts[index].aktif == '0' ? false : true,
                                                 leading: Image.network(
-                                                  'https://m-bangun.com/api-v2/assets/toko/' + blocProduk.listProducts[index].foto,
+                                                  baseURL+ '/api-v2/assets/toko/' + blocProduk.listProducts[index].foto,
                                                   width: 70,
                                                   height: 70,
                                                   errorBuilder: (context, urlImage, error) {

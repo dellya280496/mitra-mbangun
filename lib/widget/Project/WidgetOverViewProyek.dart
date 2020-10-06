@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
@@ -48,7 +49,7 @@ class WidgetOverViewProyek extends StatelessWidget {
   }
 
   getPostImages(String url) {
-    var urlImage = 'http://m-bangun.com/api-v2/assets/toko/' + url;
+    var urlImage = baseURL+ '/api-v2/assets/toko/' + url;
     if (url == null) {
       return SizedBox();
     }

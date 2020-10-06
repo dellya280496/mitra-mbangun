@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocProfile.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _PengajuanProjectState extends State<PengajuanProject> {
       body: Builder(
         builder: (BuildContext context) {
           return WebviewScaffold(
-            url: 'https://mobile.m-bangun.com/Projek?email=' + blocAuth.currentUser.email.toString(),
+            url: baseURLMobile+'/Projek?email=' + blocAuth.currentUser.email.toString(),
             withZoom: false,
             clearCache: true,
             scrollBar: true,

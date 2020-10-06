@@ -14,7 +14,7 @@
         tools:replace="android:label"
         android:name="io.flutter.app.FlutterApplication"
         android:theme="@style/AppTheme"
-        android:label="Mitra m-Bangun"
+        android:label="Project Mbangun"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

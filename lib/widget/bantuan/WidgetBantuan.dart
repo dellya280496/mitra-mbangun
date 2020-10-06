@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -23,7 +24,7 @@ class _WidgetBantuanState extends State<WidgetBantuan> {
       body: Builder(
         builder: (BuildContext context) {
           return WebView(
-            initialUrl: 'https://m-bangun.com/service',
+            initialUrl: baseURL+ '/service',
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);

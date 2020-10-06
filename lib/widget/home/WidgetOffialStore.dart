@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/providers/BlocProduk.dart';
 import 'package:apps/screen/DetailTokoScreen.dart';
@@ -31,7 +32,7 @@ class WidgetOffialStore extends StatelessWidget {
               child: new Container(
                 child: new Center(
                   child: Image.network(
-                    'http://m-bangun.com/api-v2/assets/toko/' + blocProduk.listOfficialStore[j].foto,
+                    baseURL+ '/api-v2/assets/toko/' + blocProduk.listOfficialStore[j].foto,
                     height: 60,
                     errorBuilder: (context, urlImage, error) {
                       print(error.hashCode);

@@ -14,7 +14,7 @@ class TitleHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: TextStyle(fontSize: 20, color: color, fontFamily: 'SUNDAY', letterSpacing: 2, fontWeight: FontWeight.bold),
+      style: TextStyle(fontSize: 20, color: color, fontFamily: 'WorkSansMedium', letterSpacing: 2, fontWeight: FontWeight.bold),
     );
   }
 }

@@ -74,6 +74,21 @@ class OrderRepository {
     return response;
   }
 
+  Future insertTermin(body) async {
+    final response = await _helper.post("tagihan/insert", body);
+    return response;
+  }
+
+  Future updateTermin(body) async {
+    final response = await _helper.post("tagihan/update", body);
+    return response;
+  }
+
+  Future deleteTermin(body) async {
+    final response = await _helper.post("tagihan/delete", body);
+    return response;
+  }
+
   Future makePayment(body) async {
     final response = await _helperMidtrans.post("transactions", body);
     return response;
@@ -83,4 +98,10 @@ class OrderRepository {
     final response = await _helperMidtrans.getStatus("${param}/status");
     return response;
   }
+
+  Future getProjectByOrder(param) async {
+    final response = await _helper.get("project/getAllByParam", param);
+    return response;
+  }
+
 }

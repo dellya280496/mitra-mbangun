@@ -1,6 +1,6 @@
 import 'package:apps/Utils/PreviewFoto.dart';
 import 'package:apps/providers/DataProvider.dart';
-import 'package:apps/widget/Kontrak/WidgetKontrak.dart';
+import 'package:apps/widget/Project/component/WidgetKontrak.dart';
 import 'package:apps/widget/Produk/component/WidgetDeskripsiProduk.dart';
 import 'package:apps/widget/Produk/component/WidgetDetailBahanProduk.dart';
 import 'package:apps/widget/Produk/component/WidgetDetailLokasi.dart';

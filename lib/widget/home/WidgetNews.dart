@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/screen/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class WidgetNews extends StatefulWidget {
 
 class _WidgetNewsState extends State<WidgetNews> {
   wp.WordPress wordPress = wp.WordPress(
-    baseUrl: 'https://m-bangun.com',
+    baseUrl: baseURL,
   );
 
   fetchPost() {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:apps/Repository/RajaOngkirRepository.dart';
 import 'package:apps/Repository/UserRepository.dart';
 import 'package:apps/Utils/LocalBindings.dart';
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/models/Categories.dart';
 import 'package:apps/models/Iklan.dart';
 import 'package:apps/models/OfficialStore.dart';
@@ -22,8 +23,8 @@ class BlocProduk extends ChangeNotifier {
   }
 
   List<Toko> _toko = [
-    Toko('https://m-bangun.com/wp-content/uploads/2020/07/contarctor.png', 'Boat roackerz 400 On-Ear Bluetooth Headphones', 'description', 120000, 2),
-    Toko('https://m-bangun.com/wp-content/uploads/2020/07/properti-2.png', 'Boat roackerz 100 On-Ear Bluetooth Headphones', 'description', 122222, 1),
+    Toko(baseURL+ '/wp-content/uploads/2020/07/contarctor.png', 'Boat roackerz 400 On-Ear Bluetooth Headphones', 'description', 120000, 2),
+    Toko(baseURL+ '/wp-content/uploads/2020/07/properti-2.png', 'Boat roackerz 100 On-Ear Bluetooth Headphones', 'description', 122222, 1),
   ];
   int _totalProduk = 0;
 

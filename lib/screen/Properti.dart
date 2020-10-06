@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/screen/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:jiffy/jiffy.dart';
 class PropertiAds extends StatelessWidget {
   PropertiAds({Key key}) : super(key: key);
   wp.WordPress wordPress = wp.WordPress(
-    baseUrl: 'https://m-bangun.com',
+    baseUrl: baseURL+ '',
   );
 
   int count = 0;

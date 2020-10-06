@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/providers/BlocProduk.dart';
 import 'package:apps/screen/DetailTokoScreen.dart';
@@ -45,7 +46,7 @@ class WidgetSlider extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: Image.network(
-                      'http://m-bangun.com/api-v2/assets/iklan/' +
+                      baseURL+ '/api-v2/assets/iklan/' +
                           i.baner,
                       fit: BoxFit.cover,
                       errorBuilder: (context, urlImage, error) {

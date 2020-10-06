@@ -16,9 +16,9 @@ class WidgetDetailLokasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProfile blocProfile = Provider.of<BlocProfile>(context);
-    var provinsi = blocProfile.listProvice.isNotEmpty ? blocProfile.listProvice[0].rajaongkir.results[0].province : '';
-    var kota = blocProfile.listCity.isNotEmpty ? blocProfile.listCity[0].rajaongkir.results[0].cityName : '';
-    var kecamatan = blocProfile.listSubDistrict.isNotEmpty ? blocProfile.listSubDistrict[0].rajaongkir.results[0].subdistrictName : '';
+    var provinsi = blocProfile.listSubDistrictById.isNotEmpty ? blocProfile.listSubDistrictById[0].province : '';
+    var kota = blocProfile.listSubDistrictById.isNotEmpty ? blocProfile.listSubDistrictById[0].city : '';
+    var kecamatan = blocProfile.listSubDistrictById.isNotEmpty ? blocProfile.listSubDistrictById[0].subdistrictName : '';
     return ExpansionTileCard(
       elevation: 2,
       colorCurve: Curves.easeInExpo,

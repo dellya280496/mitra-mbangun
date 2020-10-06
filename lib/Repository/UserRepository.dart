@@ -41,10 +41,12 @@ class UserRepository {
     final response = await _helper.get("produk/getRecentProduk", param);
     return response;
   }
+
   Future getRecentProyek(param) async {
     final response = await _helper.get("project/getAllByParam", param);
     return response;
   }
+
   Future getAllProduct(param) async {
     final response = await _helper.get("produk/getAllByParam", param);
     return response;
@@ -59,10 +61,12 @@ class UserRepository {
     final response = await _helper.get("produk/getFavoriteByParam", param);
     return response;
   }
+
   Future getFavoriteProyek(param) async {
     final response = await _helper.get("produk/getFavoriteByParam", param);
     return response;
   }
+
   Future getAllIklan(param) async {
     final response = await _helper.get("iklan/getAllByParam", param);
     return response;
@@ -98,7 +102,12 @@ class UserRepository {
     return response;
   }
 
- Future getBidsByParam(param) async {
+  Future getBidsByParam(param) async {
+    final response = await _helper.get("bids/getAllByParam", param);
+    return response;
+  }
+
+  Future getListPekerja(param) async {
     final response = await _helper.get("bids/getAllByParam", param);
     return response;
   }
@@ -113,8 +122,13 @@ class UserRepository {
     return response;
   }
 
-  Future addBidding(body) async {
-    final response = await _helper.post("bids/insert", body);
+  Future createSignature(body) async {
+    final response = await _helper.post("project/insertSignature", body);
+    return response;
+  }
+
+  Future addBidding(List<File> files, body) async {
+    final response = await _helper.multipart("bids/insert", files, body);
     return response;
   }
 
@@ -129,7 +143,7 @@ class UserRepository {
   }
 
   Future updateProyek(List<File> files, body) async {
-    final response = await _helper.multipart("project/update", files, body);
+    final response = await _helper.multipart("project/updateFile", files, body);
     return response;
   }
 
@@ -138,8 +152,23 @@ class UserRepository {
     return response;
   }
 
+  Future updateProfil(body) async {
+    final response = await _helper.post("user/updateProfileMitra", body);
+    return response;
+  }
+
   Future updateStatus(body) async {
     final response = await _helper.post("produk/update", body);
+    return response;
+  }
+
+  Future getTagihanByParam(param) async {
+    final response = await _helper.get("tagihan/getAllByParam", param);
+    return response;
+  }
+
+  Future uploadTermin(List<File> files, body) async {
+    final response = await _helper.multipart("tagihan/update", files, body);
     return response;
   }
 }

@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:apps/Repository/OrderRepository.dart';
 import 'package:apps/Repository/RajaOngkirRepository.dart';
 import 'package:apps/Repository/UserRepository.dart';
 import 'package:apps/Utils/LocalBindings.dart';
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/models/Bids.dart';
 import 'package:apps/models/Iklan.dart';
 import 'package:apps/models/OfficialStore.dart';
 import 'package:apps/models/Proyek.dart';
+import 'package:apps/models/TagihanM.dart';
 import 'package:apps/models/Toko.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -46,22 +49,24 @@ class BlocProyek extends ChangeNotifier {
       };
       getRecentProyek(param);
     } else {
-      var param = {
-        'aktif': '1',
-        'status': "('setuju')",
-        'status_pembayaran_survey': 'terbayar',
-        'limit': '6',
-        'offset': offset.toString(),
-        'id_jenis_layanan': idJenisLayanan.toString()
-      };
-     getRecentProyek(param);
+      if (idJenisLayanan != null) {
+        var param = {
+          'aktif': '1',
+          'status': "('setuju')",
+          'status_pembayaran_survey': 'terbayar',
+          'limit': '6',
+          'offset': offset.toString(),
+          'id_jenis_layanan': idJenisLayanan.toString()
+        };
+        getRecentProyek(param);
+      }
     }
     getIklan();
   }
 
   List<Toko> _toko = [
-    Toko('https://m-bangun.com/wp-content/uploads/2020/07/contarctor.png', 'Boat roackerz 400 On-Ear Bluetooth Headphones', 'description', 120000, 2),
-    Toko('https://m-bangun.com/wp-content/uploads/2020/07/properti-2.png', 'Boat roackerz 100 On-Ear Bluetooth Headphones', 'description', 122222, 1),
+    Toko(baseURL+ '/wp-content/uploads/2020/07/contarctor.png', 'Boat roackerz 400 On-Ear Bluetooth Headphones', 'description', 120000, 2),
+    Toko(baseURL+ '/wp-content/uploads/2020/07/properti-2.png', 'Boat roackerz 100 On-Ear Bluetooth Headphones', 'description', 122222, 1),
   ];
 
   List<Toko> get toko => _toko;
@@ -97,12 +102,18 @@ class BlocProyek extends ChangeNotifier {
 
   List<Proyek> get listProyeks => _listProyeks;
 
+  clearlistProyeks(){
+    _listProyeks = [];
+    notifyListeners();
+  }
+
   getAllProyekByParam(param) async {
     setDefaultLimitAndOffset();
     imageCache.clear();
     _isLoading = true;
     notifyListeners();
     var result = await UserRepository().getAllProyek(param);
+    print(param);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == '8') {
       _connection = false;
       _isLoading = false;
@@ -156,7 +167,6 @@ class BlocProyek extends ChangeNotifier {
   getDetailProyekByParam(param) async {
     imageCache.clear();
     _isLoading = true;
-    _detailProyek = [];
     notifyListeners();
     var result = await UserRepository().getAllProyek(param);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
@@ -256,12 +266,17 @@ class BlocProyek extends ChangeNotifier {
 
   List<Proyek> get listRecentProyek => _listRecentProyek;
 
+  clearRecentProyek(){
+    _listRecentProyek = [];
+    notifyListeners();
+  }
+
   getRecentProyek(param) async {
     imageCache.clear();
     _isLoading = true;
     notifyListeners();
     var result = await UserRepository().getAllProyek(param);
-    print(param);
+    print(result);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
       _connection = false;
       _isLoading = false;
@@ -276,11 +291,37 @@ class BlocProyek extends ChangeNotifier {
     }
   }
 
-  Future<bool> addBidding(body) async {
+  Future<bool> addBidding(List<File> files, body) async {
     imageCache.clear();
     _isLoading = true;
     notifyListeners();
-    var result = await UserRepository().addBidding(body);
+    var result = await UserRepository().addBidding(files, body);
+    if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
+      _connection = false;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    } else {
+      if (result['meta']['success']) {
+        _isLoading = false;
+        _connection = true;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        _connection = true;
+        notifyListeners();
+        return false;
+      }
+    }
+  }
+
+  Future<bool> createSignature(body) async {
+    imageCache.clear();
+    _isLoading = true;
+    notifyListeners();
+    var result = await UserRepository().createSignature(body);
+    print(result);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
       _connection = false;
       _isLoading = false;
@@ -310,7 +351,6 @@ class BlocProyek extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     var result = await UserRepository().getBidsByParam(param);
-    print(param);
     if (result['meta']['success']) {
       _isLoading = false;
       Iterable list = result['data'];
@@ -324,7 +364,31 @@ class BlocProyek extends ChangeNotifier {
       return false;
     }
   }
-  updateProyek(List<File> files, body) async {
+
+  List<Bids> _listPekerja = [];
+
+  List<Bids> get listPekerja => _listPekerja;
+
+  Future<bool> getListPekerja(param) async {
+    imageCache.clear();
+    _isLoading = true;
+    notifyListeners();
+    var result = await UserRepository().getListPekerja(param);
+    if (result['meta']['success']) {
+      _isLoading = false;
+      Iterable list = result['data'];
+      _listPekerja = list.map((model) => Bids.fromMap(model)).toList();
+      notifyListeners();
+      return true;
+    } else {
+      _listPekerja = [];
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<dynamic> updateProyek(List<File> files, body) async {
     _isLoading = true;
     notifyListeners();
     var result = await UserRepository().updateProyek(files, body);
@@ -344,6 +408,109 @@ class BlocProyek extends ChangeNotifier {
         notifyListeners();
         return result;
       }
+    }
+  }
+
+  List<TagihanM> _listTagihan = [];
+
+  List<TagihanM> get listTagihan => _listTagihan;
+
+  Future<bool> getTagihanByParam(param) async {
+    imageCache.clear();
+    _isLoading = true;
+    notifyListeners();
+    var result = await UserRepository().getTagihanByParam(param);
+    print(param);
+    if (result['meta']['success']) {
+      _isLoading = false;
+      Iterable list = result['data'];
+      _listTagihan = list.map((model) => TagihanM.fromMap(model)).toList();
+      notifyListeners();
+      return true;
+    } else {
+      _listTagihan = [];
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<dynamic> uploadTermin(List<File> files, body) async {
+    _isLoading = true;
+    notifyListeners();
+    var result = await UserRepository().uploadTermin(files, body);
+    if (result.toString() == '111' || result.toString() == '101' || result.toString() == '405' || result.toString() == 'Conncetion Error') {
+      _connection = false;
+      _isLoading = false;
+      notifyListeners();
+      return result;
+    } else {
+      if (result['meta']['success']) {
+        _isLoading = false;
+        _connection = true;
+        notifyListeners();
+        return result;
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return result;
+      }
+    }
+  }
+
+  List<Proyek> _listProjectDetail = [];
+
+  List<Proyek> get listProjectDetail => _listProjectDetail;
+
+  Future<bool> getProjectByOrder(param) async {
+    imageCache.clear();
+    _isLoading = true;
+    notifyListeners();
+    var result = await OrderRepository().getProjectByOrder(param);
+    print(result);
+    if (result['meta']['success']) {
+      _isLoading = false;
+      Iterable list = result['data'];
+      _listProjectDetail = list.map((model) => Proyek.fromMap(model)).toList();
+      var id = await LocalStorage.sharedInstance.readValue('id_user_login');
+      getBidsByParam({"id_projek": result['data'][0]['id'].toString(), 'id_user': id.toString()});
+      notifyListeners();
+      return true;
+    } else {
+      _listProjectDetail = [];
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> insertTermin(body) async {
+    _isLoading = true;
+    var result = await OrderRepository().insertTermin(body);
+    if (result['meta']['success']) {
+      return true;
+    } else {
+      return true;
+    }
+  }
+
+  Future<bool> updateTermin(body) async {
+    _isLoading = true;
+    var result = await OrderRepository().updateTermin(body);
+    if (result['meta']['success']) {
+      return true;
+    } else {
+      return true;
+    }
+  }
+
+  Future<bool> deleteTermin(body) async {
+    _isLoading = true;
+    var result = await OrderRepository().deleteTermin(body);
+    if (result['meta']['success']) {
+      return true;
+    } else {
+      return true;
     }
   }
 }

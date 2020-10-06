@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:apps/Api/Api.dart';
 import 'package:apps/Utils/BottomAnimation.dart';
@@ -25,6 +26,25 @@ class DataProvider extends ChangeNotifier {
 //      notifyListeners();
 //    });
 //    _googleSignIn.signInSilently();
+  }
+
+
+  File _file;
+
+  File get file => _file;
+
+  setFile(File file) {
+    _file = file;
+    notifyListeners();
+  }
+
+  bool _upload = false;
+
+  bool get upload =>_upload;
+
+  setUpload(bool upload){
+    _upload = upload;
+    notifyListeners();
   }
 
   bool isFavorite = false;

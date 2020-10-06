@@ -1,18 +1,18 @@
 import 'package:apps/providers/BlocAuth.dart';
-import 'package:apps/providers/DataProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:money2/money2.dart';
 import 'package:provider/provider.dart';
 
 class WidgetDeskripsiProyek extends StatelessWidget {
-  final String nama, created, lokasi,jenisLayanan, budget, noHp;
+  final String nama, created, lokasi, jenisLayanan, budget, noHp, status;
 
-  const WidgetDeskripsiProyek({Key key, this.nama,this.noHp, this.budget, this.created, this.lokasi, this.jenisLayanan}) : super(key: key);
+  const WidgetDeskripsiProyek({Key key, this.nama, this.noHp, this.status, this.budget, this.created, this.lokasi, this.jenisLayanan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
+    print(status);
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -75,19 +75,48 @@ class WidgetDeskripsiProyek extends StatelessWidget {
                     ),
                   ],
                 ),
-                !blocAuth.survey ? Container(): SizedBox(
-                  height: 10,
-                ),
-                !blocAuth.survey ? Container():Row(
-                  children: [
-                    Text(noHp),
-                    Spacer(),
-                    Icon(
-                      Icons.phone,
-                      color: Colors.blue,
-                    ),
-                  ],
-                ),
+                !blocAuth.survey
+                    ? Container()
+                    : SizedBox(
+                        height: 10,
+                      ),
+                !blocAuth.survey
+                    ? Container()
+                    : Row(
+                        children: [
+                          InkWell(
+                              onTap: () async {
+                                await FlutterPhoneDirectCaller.callNumber(noHp.toString());
+                              },
+                              child: Text(noHp)),
+                          Spacer(),
+                          Icon(
+                            Icons.phone,
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
+                status != 'proses'
+                    ? Container()
+                    : SizedBox(
+                        height: 10,
+                      ),
+                blocAuth.survey
+                    ? Container()
+                    : Row(
+                        children: [
+                          InkWell(
+                              onTap: () async {
+                                await FlutterPhoneDirectCaller.callNumber(noHp.toString());
+                              },
+                              child: Text(noHp)),
+                          Spacer(),
+                          Icon(
+                            Icons.phone,
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
               ],
             ),
           )

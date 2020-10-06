@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
@@ -206,7 +207,7 @@ class WidgetProdukTerjual extends StatelessWidget {
     if (url == null) {
       return SizedBox();
     }
-    return Image.network('https://m-bangun.com/api-v2/assets/toko/' + url, fit: BoxFit.cover, errorBuilder: (context, urlImage, error) {
+    return Image.network(baseURL+ '/api-v2/assets/toko/' + url, fit: BoxFit.cover, errorBuilder: (context, urlImage, error) {
       print(error.hashCode);
       return Image.asset('assets/logo.png');
     });

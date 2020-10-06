@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
@@ -92,7 +93,7 @@ class WidgetListPembelian extends StatelessWidget {
                                 }
                               }
                             },
-                            leading: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocOrder.listOrder[index].foto, width: 90, height: 90,
+                            leading: Image.network(baseURL+ '/api-v2/assets/toko/' + blocOrder.listOrder[index].foto, width: 90, height: 90,
                                 errorBuilder: (context, urlImage, error) {
                               print(error.hashCode);
                               return Image.asset('assets/logo.png');

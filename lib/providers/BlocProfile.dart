@@ -295,6 +295,30 @@ class BlocProfile extends ChangeNotifier {
     }
   }
 
+  updateProfil(body) async {
+    _isLoading = true;
+    notifyListeners();
+    var result = await UserRepository().updateProfil(body);
+    print(result);
+    if (result.toString() == '111' || result.toString() == '101' || result.toString() == '405' || result.toString() == '8') {
+      _connection = false;
+      _isLoading = false;
+      notifyListeners();
+      return result;
+    } else {
+      if (result['meta']['success']) {
+        _isLoading = false;
+        _connection = true;
+        notifyListeners();
+        return result;
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return result;
+      }
+    }
+  }
+
   List<Penghasilan> _listPenghasilan = [];
 
   List<Penghasilan> get listPenghasilan => _listPenghasilan;

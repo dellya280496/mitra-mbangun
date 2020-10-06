@@ -1,7 +1,10 @@
+import 'package:apps/Utils/BottomAnimation.dart';
 import 'package:apps/Utils/SnacbarLauncher.dart';
 import 'package:apps/Utils/TextBold.dart';
 import 'package:apps/Utils/TitleHeader.dart';
+import 'package:apps/main.dart';
 import 'package:apps/providers/BlocAuth.dart';
+import 'package:apps/providers/BlocProyek.dart';
 import 'package:apps/screen/PendaftaranScreen.dart';
 import 'package:apps/widget/Pendaftaran/WidgetTunggu.dart';
 import 'package:flutter/cupertino.dart';
@@ -93,7 +96,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           height: 10,
                                         ),
                                         TitleHeader(
-                                          title: 'm-Bangun',
+                                          title: 'Project Mbangun',
                                           color: Colors.black,
                                         )
                                       ],
@@ -103,6 +106,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 Center(
                                   child: Column(
                                     children: [
+                                      Text('Silahkan masuk atau daftar dengan google'),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
                                       Container(
                                         width: MediaQuery.of(context).size.width * 0.8,
                                         height: 50,
@@ -112,12 +119,27 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           iconSize: 18,
                                           onPressed: () async {
                                             BlocAuth blocAuth = Provider.of<BlocAuth>(context);
-                                            var result = await blocAuth.handleSignIn();
-                                            if (widget.page == 'product') {
-                                              Navigator.pop(context);
-                                              blocAuth.checkSession();
-                                            }
-                                            blocAuth.checkSession();
+                                            BlocProyek blocProyek = Provider.of<BlocProyek>(context);
+                                            var result = blocAuth.handleSignIn();
+                                            result.then((value) {
+                                              print(value);
+                                              if (value) {
+                                                var idJenisLayanan = blocAuth.listJenisLayananMitra.map((e) => e.id).toString();
+                                                var param = {
+                                                  'aktif': '1',
+                                                  'status': "('setuju')",
+                                                  'status_pembayaran_survey': 'terbayar',
+                                                  'limit': '6',
+                                                  'offset': blocProyek.offset.toString(),
+                                                  'id_jenis_layanan': idJenisLayanan
+                                                };
+                                                blocProyek.getRecentProyek(param);
+                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+                                              } else {
+//                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomAnimateBar()));
+                                                blocAuth.checkSession();
+                                              }
+                                            });
                                           },
                                           icon: Icon(FontAwesomeIcons.google),
                                         ),
@@ -132,7 +154,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           ),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [Text('Selamat datang di', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)), TextBold(title: ' m-Bangun')],
+                                            children: [Text('Selamat datang di', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)), TextBold(title: ' Mbangun')],
                                           ),
                                         ),
                                       ),

@@ -8,8 +8,8 @@ class HeaderAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      decoration: BoxDecoration(color: Colors.cyan[700], borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50))),
+      height: 80,
+      decoration: BoxDecoration(color: Colors.cyan[700], borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40))),
     );
   }
 }

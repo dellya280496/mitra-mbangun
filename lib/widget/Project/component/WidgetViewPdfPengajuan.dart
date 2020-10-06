@@ -1,6 +1,7 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WidgetViewPdfPengajuan extends StatefulWidget {
   WidgetViewPdfPengajuan({Key key, @required this.urlPdf, @required this.title}) : super(key: key);
@@ -41,6 +42,24 @@ class _WidgetViewPdfPengajuanState extends State<WidgetViewPdfPengajuan> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+                icon: Icon(
+                  Icons.cloud_download,
+                  color: Colors.cyan[700],
+                ),
+                onPressed: () async {
+                  var url = widget.urlPdf;
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                }),
+          )
+        ],
       ),
       body: Center(
         child: _isLoading

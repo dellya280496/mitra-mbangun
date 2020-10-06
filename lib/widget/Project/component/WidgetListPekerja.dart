@@ -42,7 +42,7 @@ class _WidgetListPekerjaState extends State<WidgetListPekerja> {
           thickness: 1.0,
           height: 1.0,
         ),
-        Padding(
+        blocProyek.listPekerja.isEmpty ? Container( height:50,child: Center(child: Text('Belum ada mitra yang bid nih!'),)): Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,29 +51,29 @@ class _WidgetListPekerjaState extends State<WidgetListPekerja> {
                 width: MediaQuery.of(context).size.width,
                 height: 250,
                 child: ListView.builder(
-                    itemCount: blocProyek.listBids.length,
+                    itemCount: blocProyek.listPekerja.length,
                     itemBuilder: (context, index) {
-                      var jenisMitra = blocProyek.listBids[index].jenisMitra;
-                      print(blocProyek.listBids[index].status);
+                      var jenisMitra = blocProyek.listPekerja[index].jenisMitra;
+                      print(blocProyek.listPekerja[index].status);
                       return Column(
                         children: [
                           ListTile(
                             leading: WidgetFotoCircular(
-                              userFoto: blocProyek.listBids[index].fotoMitra,
+                              userFoto: blocProyek.listPekerja[index].fotoMitra,
                             ),
-                            title: Text(blocProyek.listBids[index].namaMitra + ' (' + blocProyek.listBids[index].waktuPengerjaan + ' Hari' + ')'),
+                            title: Text(blocProyek.listPekerja[index].namaMitra + ' (' + blocProyek.listPekerja[index].waktuPengerjaan + ' Hari' + ')'),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(blocProyek.listBids[index].deskripsi),
-//                                Text(blocProyek.listBids[index].bidwaktupengerjaan + ' Hari'),
+                                Text(blocProyek.listPekerja[index].deskripsi),
+//                                Text(blocProyek.listPekerja[index].bidwaktupengerjaan + ' Hari'),
                                 Text(
                                   jenisMitra.toString().toUpperCase(),
                                   style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, color: Colors.grey),
                                 ),
                               ],
                             ),
-                            trailing: blocProyek.listBids[index].status == '1'
+                            trailing: blocProyek.listPekerja[index].status == '1'
                                 ? Icon(
                                     Icons.done_all,
                                     color: Colors.green,

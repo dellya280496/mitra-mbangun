@@ -1,4 +1,5 @@
 import 'package:apps/Utils/PreviewFoto.dart';
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/providers/BlocProduk.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +45,11 @@ class WidgetFlexibleSpaceDetailProduct extends StatelessWidget {
                 context,
                 PageRouteTransition(
                   animationType: AnimationType.slide_down,
-                  builder: (context) => PreviewFoto(urlFoto: 'https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto),
+                  builder: (context) => PreviewFoto(urlFoto: baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto),
                 ),
               );
             },
-            child: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto, width: MediaQuery.of(context).size.width, fit: BoxFit.fitWidth,
+            child: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto, width: MediaQuery.of(context).size.width, fit: BoxFit.fitWidth,
                 errorBuilder: (context, urlImage, error) {
               print(error.hashCode);
               return Image.asset('assets/logo.png');
@@ -60,11 +61,11 @@ class WidgetFlexibleSpaceDetailProduct extends StatelessWidget {
                 context,
                 PageRouteTransition(
                   animationType: AnimationType.slide_down,
-                  builder: (context) => PreviewFoto(urlFoto: 'https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto1),
+                  builder: (context) => PreviewFoto(urlFoto: baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto1),
                 ),
               );
             },
-            child: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto1, width: MediaQuery
+            child: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto1, width: MediaQuery
                 .of(context)
                 .size
                 .width, fit: BoxFit.fitWidth,
@@ -79,11 +80,11 @@ class WidgetFlexibleSpaceDetailProduct extends StatelessWidget {
                 context,
                 PageRouteTransition(
                   animationType: AnimationType.slide_down,
-                  builder: (context) => PreviewFoto(urlFoto: 'https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto2),
+                  builder: (context) => PreviewFoto(urlFoto: baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto2),
                 ),
               );
             },
-            child: Image.network('https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto2, width: MediaQuery
+            child: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto2, width: MediaQuery
                 .of(context)
                 .size
                 .width, fit: BoxFit.fitWidth,

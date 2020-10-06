@@ -44,6 +44,7 @@ class Bids {
   String alamatLengkap;
   String statusProyek;
   String foto1;
+  String idKecamatan;
 
   static Bids fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
@@ -70,6 +71,7 @@ class Bids {
     bidsBean.alamatLengkap = map['alamat_lengkap'];
     bidsBean.statusProyek = map['status_proyek'];
     bidsBean.foto1 = map['foto1'];
+    bidsBean.idKecamatan = map['id_kecamatan'];
     return bidsBean;
   }
 
@@ -96,5 +98,6 @@ class Bids {
     "alamat_lengkap": alamatLengkap,
     "status_proyek": statusProyek,
     "foto1": foto1,
+    "id_kecamatan": idKecamatan,
   };
 }

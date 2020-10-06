@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/SnacbarLauncher.dart';
 import 'package:apps/models/Categories.dart';
 import 'package:apps/providers/BlocAuth.dart';
@@ -403,7 +404,7 @@ class _WidgetUpdateProdukState extends State<WidgetUpdateProduk> {
                                           : blocProduk.detailProduct[0].foto == null
                                               ? Container()
                                               : Image.network(
-                                                  'https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto,
+                                                  baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto,
                                                 ),
                                       Container(
                                         height: 20,
@@ -446,7 +447,7 @@ class _WidgetUpdateProdukState extends State<WidgetUpdateProduk> {
                                           : blocProduk.detailProduct[0].foto1 == null
                                               ? Container()
                                               : Image.network(
-                                                  'https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto1,
+                                                  baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto1,
                                                 ),
                                       Container(
                                         height: 20,
@@ -488,7 +489,7 @@ class _WidgetUpdateProdukState extends State<WidgetUpdateProduk> {
                                           : blocProduk.detailProduct[0].foto2 == null
                                               ? Container()
                                               : Image.network(
-                                                  'https://m-bangun.com/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto2,
+                                                  baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto2,
                                                 ),
                                       Container(
                                         height: 20,
@@ -656,7 +657,7 @@ class _WidgetUpdateProdukState extends State<WidgetUpdateProduk> {
   }
 
   void _getImage(BuildContext context, ImageSource source, param) async {
-    File image = await ImagePicker.pickImage(source: source, imageQuality: 50);
+    File image = await ImagePicker.pickImage(source: source, maxHeight: 640, maxWidth: 640, imageQuality: 50);
     if (param == 'foto') {
       setState(() {
         foto = image;

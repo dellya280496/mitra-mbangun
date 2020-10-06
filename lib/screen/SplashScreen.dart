@@ -1,4 +1,5 @@
 import 'package:apps/Utils/BottomAnimation.dart';
+import 'package:apps/screen/LoginScreen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                             width: 150,
                           )),
                           Text(
-                            'm-Bangun',
+                            'Mbangun',
                             style: TextStyle(fontSize: 24, fontFamily: 'SUNDAY', letterSpacing: 2, fontWeight: FontWeight.bold),
                           )
                         ],

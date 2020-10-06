@@ -36,8 +36,12 @@ class WidgetDetailBahan extends StatelessWidget {
               child : Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Html(
-                    data: param.deskripsi,
+                  Container(
+                    height: 70,
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Html(
+                      data: param.deskripsi,
+                    ),
                   ),
                   InkWell(
                       onTap: (){

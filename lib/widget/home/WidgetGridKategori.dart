@@ -1,3 +1,4 @@
+import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/models/Categories.dart';
 import 'package:apps/providers/BlocProduk.dart';
@@ -45,7 +46,7 @@ class WidgetGridKategori extends StatelessWidget {
                     ),
                     child: new Center(
                       child: Image.network(
-                        'http://m-bangun.com/api-v2/assets/kategori/' + blocProduk.listCategory[j].icon.toString(),
+                        baseURL+ '/api-v2/assets/kategori/' + blocProduk.listCategory[j].icon.toString(),
                         height: 30,
                         width: 30,
                       ),

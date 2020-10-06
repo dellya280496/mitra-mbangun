@@ -1,9 +1,11 @@
 import 'package:apps/Utils/navigation_right.dart';
 import 'package:apps/models/ProyekListM.dart';
+import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
 import 'package:apps/providers/BlocProyek.dart';
 import 'package:apps/providers/BlocProfile.dart';
 import 'package:apps/providers/BlocProyek.dart';
+import 'package:apps/widget/Profile/WidgetUpdateProfile.dart';
 import 'package:apps/widget/Project/WidgetDetailProyek.dart';
 import 'package:apps/widget/Project/WidgetOverViewProyek.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +15,11 @@ import 'package:money2/money2.dart';
 import 'package:provider/provider.dart';
 
 class WidgetListProyek extends StatefulWidget {
-  final String idSubKategori;
+  final String namaKategori;
   final param;
+  final status;
 
-  WidgetListProyek({Key key, this.idSubKategori, this.param}) : super(key: key);
+  WidgetListProyek({Key key, this.namaKategori, this.status, this.param}) : super(key: key);
 
   @override
   _WidgetListProyekState createState() {
@@ -48,18 +51,14 @@ class _WidgetListProyekState extends State<WidgetListProyek> {
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
     BlocProfile blocProfile = Provider.of<BlocProfile>(context);
     BlocOrder blocOrder = Provider.of<BlocOrder>(context);
+    BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     var size = MediaQuery.of(context).size;
-    print(widget.param);
-    /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    final double itemWidth = size.width / 2;
     return ModalProgressHUD(
       inAsyncCall: blocProyek.isLoading,
       child: LazyLoadScrollView(
         isLoading: blocProyek.isLoading,
         onEndOfPage: () => loadMore(),
         child: GridView.count(
-//      shrinkWrap: true,
           crossAxisCount: 2,
           childAspectRatio: 0.8,
           children: List.generate(
@@ -70,9 +69,17 @@ class _WidgetListProyekState extends State<WidgetListProyek> {
               return InkWell(
                 onTap: () {
                   blocProyek.getDetailProyekByParam({'id': blocProyek.listProyeks[j].id.toString()});
-                  blocProfile.getCityParam({'id': blocProyek.listProyeks[j].idKota.toString()});
-                  blocOrder.getUlasanProduByParam({'id_Proyek': blocProyek.listProyeks[j].id});
-                  Navigator.push(context, SlideRightRoute(page: WidgetDetailProyek(param: blocProyek.listProyeks[j],)));
+                  blocProyek.getTagihanByParam({'id_proyek': blocProyek.listProyeks[j].id.toString()});
+                  blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser, 'id_projek': blocProyek.listProyeks[j].id});
+                  blocProfile.getSubDistrictById(blocProyek.listProyeks[j].idKecamatan);
+                  blocProyek.getListPekerja({'id_projek': blocProyek.listProyeks[j].id.toString(), 'status_proyek': widget.status.toString()});
+
+                  if ((blocAuth.detailMitra[0].namaBank == null && blocAuth.detailMitra[0].noRekening == null && blocAuth.detailMitra[0].namaPemilikRekening == null) ||
+                      (blocAuth.detailMitra[0].namaBank == '' && blocAuth.detailMitra[0].noRekening == '' && blocAuth.detailMitra[0].namaPemilikRekening == '')) {
+                    Navigator.push(context, SlideRightRoute(page: WidgetUpdateProfile()));
+                  } else {
+                    Navigator.push(context, SlideRightRoute(page: WidgetDetailProyek()));
+                  }
                 },
                 child: WidgetOverViewProyek(
                   ProyekNama: blocProyek.listProyeks[j].nama,
