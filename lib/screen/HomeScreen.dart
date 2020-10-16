@@ -78,37 +78,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           )
         : !blocAuth.isMitra
             ? WidgetTunggu()
-            : Scaffold(
-                appBar: appBar,
-                body: !blocProduk.connection
-                    ? WidgetErrorConection()
-                    : Container(
-                        margin: EdgeInsets.only(bottom: 50),
-                        color: Colors.white10.withOpacity(0.2),
-                        child: Stack(
-                          children: [
-                            HeaderAnimation(),
-                            Container(
-                              margin: EdgeInsets.only(top: 80),
-                              height: MediaQuery.of(context).size.height - 80 - height - MediaQuery.of(context).padding.top - 50,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    WidgetSlider(
-                                      blocProduk: blocProduk,
-                                    ),
-                                    WidgetRecentProyek(
-                                      blocProyek: blocProyek,
-                                    ),
-                                    WidgetNews(),
-                                  ],
+            : RefreshIndicator(
+                onRefresh: () async {
+                  blocAuth.checkSession();
+                  blocProduk.initLoad();
+                  if (blocAuth.survey) {
+                    var param = {
+                      'aktif': '1',
+                      'status': "('survey','setuju')",
+                      'status_pembayaran_survey': 'terbayar',
+                      'limit': '6',
+                      'offset': blocProyek.offset.toString(),
+                    };
+                    blocProyek.getRecentProyek(param);
+                  } else {
+                    var idJenisLayanan = blocAuth.listJenisLayananMitra.map((e) => e.id).toString();
+                    if (idJenisLayanan != '()') {
+                      var param = {
+                        'aktif': '1',
+                        'status': "('setuju')",
+                        'status_pembayaran_survey': 'terbayar',
+                        'limit': '6',
+                        'offset': blocProyek.offset.toString(),
+                        'id_jenis_layanan': idJenisLayanan
+                      };
+                      blocProyek.getRecentProyek(param);
+                    } else {
+                      blocProyek.clearlistProyeks();
+                      blocProyek.clearRecentProyek();
+                    }
+                  }
+                },
+                child: Scaffold(
+                  appBar: appBar,
+                  body: !blocProduk.connection
+                      ? WidgetErrorConection()
+                      : Container(
+                          margin: EdgeInsets.only(bottom: 50),
+                          color: Colors.white10.withOpacity(0.2),
+                          child: Stack(
+                            children: [
+                              HeaderAnimation(),
+                              Container(
+                                margin: EdgeInsets.only(top: 80),
+                                height: MediaQuery.of(context).size.height - 80 - height - MediaQuery.of(context).padding.top - 50,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      WidgetSlider(
+                                        blocProduk: blocProduk,
+                                      ),
+                                      WidgetRecentProyek(
+                                        blocProyek: blocProyek,
+                                      ),
+                                      WidgetNews(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            WidgetKategori(),
-                          ],
+                              WidgetKategori(),
+                            ],
+                          ),
                         ),
-                      ),
+                ),
               );
   }
 

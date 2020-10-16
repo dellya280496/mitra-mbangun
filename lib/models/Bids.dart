@@ -24,6 +24,7 @@
 class Bids {
   String id;
   String idProjek;
+  String noOrder;
   String createdAt;
   String updatedAt;
   String deskripsi;
@@ -51,6 +52,7 @@ class Bids {
     Bids bidsBean = Bids();
     bidsBean.id = map['id'];
     bidsBean.idProjek = map['id_projek'];
+    bidsBean.noOrder = map['no_order'];
     bidsBean.createdAt = map['created_at'];
     bidsBean.updatedAt = map['updated_at'];
     bidsBean.deskripsi = map['deskripsi'];
@@ -78,6 +80,7 @@ class Bids {
   Map toJson() => {
     "id": id,
     "id_projek": idProjek,
+    "no_order": noOrder,
     "created_at": createdAt,
     "updated_at": updatedAt,
     "deskripsi": deskripsi,

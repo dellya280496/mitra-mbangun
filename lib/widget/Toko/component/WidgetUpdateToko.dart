@@ -191,7 +191,7 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
                                             width: 100.0,
                                             height: 100.0,
                                             child: ClipOval(
-                                              child: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProfile.dataToko['foto'], fit: BoxFit.contain,
+                                              child: Image.network(baseURL + '/' + pathUrl + '/assets/toko/' + blocProfile.dataToko['foto'], fit: BoxFit.contain,
                                                   errorBuilder: (context, urlImage, error) {
                                                 print(error.hashCode);
                                                 return Image.asset('assets/logo.png');
@@ -243,7 +243,7 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
                                     : blocProfile.dataToko['foto_sampul'] == null
                                         ? Container()
                                         : Image.network(
-                                            baseURL+ '/api-v2/assets/toko/' + blocProfile.dataToko['foto_sampul'],
+                                            baseURL + '/'+ pathUrl +'/assets/toko/' + blocProfile.dataToko['foto_sampul'],
                                             height: 200,
                                           ),
                                 Container(
@@ -263,14 +263,14 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
                             },
                           ),
                         ),
-                  Container(
-                    height: 20,
+                        Container(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -361,7 +361,8 @@ class _WidgetUpdateTokoState extends State<WidgetUpdateToko> {
   void _getImage(BuildContext context, ImageSource source, param) async {
     File image = await ImagePicker.pickImage(
       source: source,
-      maxHeight: 640, maxWidth: 640,
+      maxHeight: 640,
+      maxWidth: 640,
       imageQuality: 50,
     );
     if (param == 'foto') {

@@ -12,11 +12,30 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyAdsScreen extends StatefulWidget {
+  final int indexPage;
+
+  MyAdsScreen({Key key, this.indexPage}) : super(key: key);
+
   @override
   _MyAdsScreenState createState() => _MyAdsScreenState();
 }
 
-class _MyAdsScreenState extends State<MyAdsScreen> {
+class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = new TabController(vsync: this, length: 3);
+    _tabController.animateTo(widget.indexPage == null ? 0 : widget.indexPage, duration: Duration(seconds: 1));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
@@ -30,6 +49,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: TabBar(
+              controller: _tabController,
               isScrollable: true,
               labelColor: Color(0xffb16a085),
               unselectedLabelColor: Colors.white,
@@ -93,6 +113,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
                       appBar: appBar,
                       body: Container(
                         child: TabBarView(
+                          controller: _tabController,
                           children: [
                             Container(child: WidgetListPenawaran(title: 'penawaran')),
                             Container(child: WidgetListProses(title: 'proses')),

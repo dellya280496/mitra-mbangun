@@ -404,7 +404,7 @@ class _WidgetUpdateProdukState extends State<WidgetUpdateProduk> {
                                           : blocProduk.detailProduct[0].foto == null
                                               ? Container()
                                               : Image.network(
-                                                  baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto,
+                                                  baseURL+ '/'+ pathUrl +'/assets/toko/' + blocProduk.detailProduct[0].foto,
                                                 ),
                                       Container(
                                         height: 20,
@@ -447,7 +447,7 @@ class _WidgetUpdateProdukState extends State<WidgetUpdateProduk> {
                                           : blocProduk.detailProduct[0].foto1 == null
                                               ? Container()
                                               : Image.network(
-                                                  baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto1,
+                                                  baseURL+ '/'+ pathUrl +'/assets/toko/' + blocProduk.detailProduct[0].foto1,
                                                 ),
                                       Container(
                                         height: 20,
@@ -489,7 +489,7 @@ class _WidgetUpdateProdukState extends State<WidgetUpdateProduk> {
                                           : blocProduk.detailProduct[0].foto2 == null
                                               ? Container()
                                               : Image.network(
-                                                  baseURL+ '/api-v2/assets/toko/' + blocProduk.detailProduct[0].foto2,
+                                                  baseURL+ '/'+ pathUrl +'/assets/toko/' + blocProduk.detailProduct[0].foto2,
                                                 ),
                                       Container(
                                         height: 20,

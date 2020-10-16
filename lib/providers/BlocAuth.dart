@@ -216,7 +216,7 @@ class BlocAuth extends ChangeNotifier {
           if (result['data']['aktif_mitra'] == '0') {
             Iterable list = result['jenis_layanan_mitra'];
             _listJenisLayananMitra = list.map((model) => JenisLayananMitra.fromMap(model)).toList();
-            Iterable listMitra = result['data'];
+            Iterable listMitra = [result['data']];
             _detailMitra = listMitra.map((model) => UserMitra.fromMap(model)).toList();
             _connection = true;
             _token = result['token'];
@@ -305,9 +305,9 @@ class BlocAuth extends ChangeNotifier {
     }
   }
 
-  List<NotificationM> _listNotification = [];
+  List _listNotification = [];
 
-  List<NotificationM> get listNotification => _listNotification;
+  List get listNotification => _listNotification;
 
   getNotification() async {
     _isLoading = true;
@@ -325,7 +325,7 @@ class BlocAuth extends ChangeNotifier {
         _connection = true;
         _listNotification = [];
         Iterable list = result['data'];
-        _listNotification = list.map((model) => NotificationM.fromMap(model)).toList();
+        _listNotification = result['data'];
         notifyListeners();
         getNotificationUnread();
         return result['data'];

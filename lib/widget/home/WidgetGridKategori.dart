@@ -46,7 +46,7 @@ class WidgetGridKategori extends StatelessWidget {
                     ),
                     child: new Center(
                       child: Image.network(
-                        baseURL+ '/api-v2/assets/kategori/' + blocProduk.listCategory[j].icon.toString(),
+                        baseURL+ '/'+ pathUrl +'/assets/kategori/' + blocProduk.listCategory[j].icon.toString(),
                         height: 30,
                         width: 30,
                       ),

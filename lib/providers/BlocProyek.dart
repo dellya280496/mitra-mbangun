@@ -59,14 +59,25 @@ class BlocProyek extends ChangeNotifier {
           'id_jenis_layanan': idJenisLayanan.toString()
         };
         getRecentProyek(param);
+        if (idJenisLayanan != '()') {
+          var param = {
+            'aktif': '1',
+            'status': "('setuju')",
+            'status_pembayaran_survey': 'terbayar',
+            'limit': limit.toString(),
+            'offset': offset.toString(),
+            'id_jenis_layanan': idJenisLayanan.toString()
+          };
+          getAllProyekByParam(param);
+        }
       }
     }
     getIklan();
   }
 
   List<Toko> _toko = [
-    Toko(baseURL+ '/wp-content/uploads/2020/07/contarctor.png', 'Boat roackerz 400 On-Ear Bluetooth Headphones', 'description', 120000, 2),
-    Toko(baseURL+ '/wp-content/uploads/2020/07/properti-2.png', 'Boat roackerz 100 On-Ear Bluetooth Headphones', 'description', 122222, 1),
+    Toko(baseURL + '/wp-content/uploads/2020/07/contarctor.png', 'Boat roackerz 400 On-Ear Bluetooth Headphones', 'description', 120000, 2),
+    Toko(baseURL + '/wp-content/uploads/2020/07/properti-2.png', 'Boat roackerz 100 On-Ear Bluetooth Headphones', 'description', 122222, 1),
   ];
 
   List<Toko> get toko => _toko;
@@ -102,7 +113,7 @@ class BlocProyek extends ChangeNotifier {
 
   List<Proyek> get listProyeks => _listProyeks;
 
-  clearlistProyeks(){
+  clearlistProyeks() {
     _listProyeks = [];
     notifyListeners();
   }
@@ -176,15 +187,19 @@ class BlocProyek extends ChangeNotifier {
       notifyListeners();
       return result['data'];
     } else {
-      var id = await LocalStorage.sharedInstance.readValue('id_user_login');
-      var body = {'id_user_login': '1', 'id_produk': param['id'], 'id_user_login': id.toString()};
-      addCountViewProduk(body);
-      Iterable list = result['data'];
-      _detailProyek = list.map((model) => Proyek.fromMap(model)).toList();
-      _connection = true;
-      _isLoading = false;
-      notifyListeners();
-      return result['data'];
+      if (result['meta']['status']) {
+        var id = await LocalStorage.sharedInstance.readValue('id_user_login');
+        var body = {'id_user_login': '1', 'id_produk': param['id'], 'id_user_login': id.toString()};
+        addCountViewProduk(body);
+        Iterable list = result['data'];
+        _detailProyek = list.map((model) => Proyek.fromMap(model)).toList();
+        _connection = true;
+        _isLoading = false;
+        notifyListeners();
+        return result['data'];
+      }else{
+
+      }
     }
   }
 
@@ -266,7 +281,7 @@ class BlocProyek extends ChangeNotifier {
 
   List<Proyek> get listRecentProyek => _listRecentProyek;
 
-  clearRecentProyek(){
+  clearRecentProyek() {
     _listRecentProyek = [];
     notifyListeners();
   }
@@ -392,6 +407,30 @@ class BlocProyek extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     var result = await UserRepository().updateProyek(files, body);
+//    print(result);
+    if (result.toString() == '111' || result.toString() == '101' || result.toString() == '405' || result.toString() == 'Conncetion Error') {
+      _connection = false;
+      _isLoading = false;
+      notifyListeners();
+      return result;
+    } else {
+      if (result['meta']['success']) {
+        _isLoading = false;
+        _connection = true;
+        notifyListeners();
+        return result;
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return result;
+      }
+    }
+  }
+
+  Future<dynamic> updateFileLaporanProyek(List<File> files, body) async {
+    _isLoading = true;
+    notifyListeners();
+    var result = await UserRepository().updateFileLaporanProyek(files, body);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == '405' || result.toString() == 'Conncetion Error') {
       _connection = false;
       _isLoading = false;

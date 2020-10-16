@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:apps/main.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
@@ -32,6 +34,7 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
   @override
   void initState() {
     _requestIOSPermissions();
+    _initializeTimer();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
     _firebaseMessaging.configure(
@@ -67,6 +70,16 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
       }
     });
   }
+
+  Timer timer;
+  void _initializeTimer() {
+    timer = Timer.periodic(const Duration(seconds: 50), (__) {
+      BlocOrder blocOrder = Provider.of<BlocOrder>(context);
+      BlocAuth blocAuth = Provider.of<BlocAuth>(context);
+      blocAuth.checkSession();
+    });
+  }
+
   void _requestIOSPermissions() {
     flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
       alert: true,
@@ -429,10 +442,8 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
               minWidth: 30,
               onPressed: () {
                 setState(() {
-                  blocAuth.checkSession();
-                  blocOrder.setIdUser();
-                  blocOrder.getCountSaleByParam({'id_toko': blocAuth.idToko.toString()});
-//                      blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser.toString(), 'status_proyek': 'setuju'});
+//                  blocAuth.checkSession();
+//                  blocOrder.setIdUser();
                   currentScreen = MyAdsScreen(); // if user taps on this dashboard tab will be active
                   currentTab = 2;
                 });

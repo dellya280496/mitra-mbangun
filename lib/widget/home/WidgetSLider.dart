@@ -46,7 +46,7 @@ class WidgetSlider extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: Image.network(
-                      baseURL+ '/api-v2/assets/iklan/' +
+                      baseURL+ '/'+ pathUrl +'/assets/iklan/' +
                           i.baner,
                       fit: BoxFit.cover,
                       errorBuilder: (context, urlImage, error) {

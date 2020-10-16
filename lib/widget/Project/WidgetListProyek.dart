@@ -58,36 +58,67 @@ class _WidgetListProyekState extends State<WidgetListProyek> {
       child: LazyLoadScrollView(
         isLoading: blocProyek.isLoading,
         onEndOfPage: () => loadMore(),
-        child: GridView.count(
-          crossAxisCount: 2,
-          childAspectRatio: 0.8,
-          children: List.generate(
-            blocProyek.listProyeks.length,
-            (j) {
-              var harga = blocProyek.listProyeks[j].budget;
-              var hargaFormat = Money.fromInt(harga == null ? 0 : int.parse(harga), IDR);
-              return InkWell(
-                onTap: () {
-                  blocProyek.getDetailProyekByParam({'id': blocProyek.listProyeks[j].id.toString()});
-                  blocProyek.getTagihanByParam({'id_proyek': blocProyek.listProyeks[j].id.toString()});
-                  blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser, 'id_projek': blocProyek.listProyeks[j].id});
-                  blocProfile.getSubDistrictById(blocProyek.listProyeks[j].idKecamatan);
-                  blocProyek.getListPekerja({'id_projek': blocProyek.listProyeks[j].id.toString(), 'status_proyek': widget.status.toString()});
+        child: RefreshIndicator(
+        onRefresh: ()async {
+          blocAuth.checkSession();
+          if (blocAuth.survey) {
+            var param = {
+              'aktif': '1',
+              'status': "('survey','setuju')",
+              'status_pembayaran_survey': 'terbayar',
+              'limit': blocProyek.limit.toString(),
+              'offset': blocProyek.offset.toString(),
+            };
+            blocProyek.getAllProyekByParam(param);
+          } else {
+            var idJenisLayanan = blocAuth.listJenisLayananMitra.map((e) => e.id).toString();
+            if (idJenisLayanan != '()') {
+              var param = {
+                'aktif': '1',
+                'status': "('setuju')",
+                'status_pembayaran_survey': 'terbayar',
+                'limit': blocProyek.limit.toString(),
+                'offset': blocProyek.offset.toString(),
+                'id_jenis_layanan': idJenisLayanan
+              };
+              blocProyek.getAllProyekByParam(param);
+            } else {
+              blocProyek.clearlistProyeks();
+              blocProyek.clearRecentProyek();
+            }
+          }
+        },
+          child: GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: 0.8,
+            children: List.generate(
+              blocProyek.listProyeks.length,
+              (j) {
+                var harga = blocProyek.listProyeks[j].budget;
+                var hargaFormat = Money.fromInt(harga == null ? 0 : int.parse(harga), IDR);
+                return InkWell(
+                  onTap: () {
+                    blocProyek.getDetailProyekByParam({'id': blocProyek.listProyeks[j].id.toString()});
+                    blocProyek.getTagihanByParam({'id_proyek': blocProyek.listProyeks[j].id.toString()});
+                    blocProyek.getBidsByParam({'id_mitra': blocAuth.idUser, 'id_projek': blocProyek.listProyeks[j].id});
+                    blocProfile.getSubDistrictById(blocProyek.listProyeks[j].idKecamatan);
+                    blocProyek.getListPekerja({'id_projek': blocProyek.listProyeks[j].id.toString(), 'status_proyek': widget.status.toString()});
 
-                  if ((blocAuth.detailMitra[0].namaBank == null && blocAuth.detailMitra[0].noRekening == null && blocAuth.detailMitra[0].namaPemilikRekening == null) ||
-                      (blocAuth.detailMitra[0].namaBank == '' && blocAuth.detailMitra[0].noRekening == '' && blocAuth.detailMitra[0].namaPemilikRekening == '')) {
-                    Navigator.push(context, SlideRightRoute(page: WidgetUpdateProfile()));
-                  } else {
-                    Navigator.push(context, SlideRightRoute(page: WidgetDetailProyek()));
-                  }
-                },
-                child: WidgetOverViewProyek(
-                  ProyekNama: blocProyek.listProyeks[j].nama,
-                  thumbnail: blocProyek.listProyeks[j].foto1,
-                  harga: hargaFormat.toString(),
-                ),
-              );
-            },
+                    if ((blocAuth.detailMitra[0].namaBank == null && blocAuth.detailMitra[0].noRekening == null && blocAuth.detailMitra[0].namaPemilikRekening == null) ||
+                        (blocAuth.detailMitra[0].namaBank == '' && blocAuth.detailMitra[0].noRekening == '' && blocAuth.detailMitra[0].namaPemilikRekening == '')) {
+                      Navigator.push(context, SlideRightRoute(page: WidgetUpdateProfile()));
+                    } else {
+                      Navigator.push(context, SlideRightRoute(page: WidgetDetailProyek()));
+                    }
+                  },
+                  child: WidgetOverViewProyek(
+                    ProyekNama: blocProyek.listProyeks[j].nama,
+                    thumbnail: blocProyek.listProyeks[j].foto1,
+                    harga: hargaFormat.toString(),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

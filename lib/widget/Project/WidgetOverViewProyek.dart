@@ -49,7 +49,7 @@ class WidgetOverViewProyek extends StatelessWidget {
   }
 
   getPostImages(String url) {
-    var urlImage = baseURL+ '/api-v2/assets/toko/' + url;
+    var urlImage = baseURL+ '/'+ pathUrl +'/assets/toko/' + url;
     if (url == null) {
       return SizedBox();
     }

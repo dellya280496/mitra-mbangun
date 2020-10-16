@@ -141,12 +141,12 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                                             builder: (context) => PreviewFoto(
                                               urlFoto: blocProyek.detailProyek[0].foto1 == null
                                                   ? dataProvider.fotoNull
-                                                  : baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto1,
+                                                  : baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto1,
                                             ),
                                           ));
                                     },
                                     child: Image.network(
-                                      blocProyek.detailProyek[0].foto1 == null ? dataProvider.fotoNull : baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto1,
+                                      blocProyek.detailProyek[0].foto1 == null ? dataProvider.fotoNull : baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto1,
                                       width: MediaQuery.of(context).size.width,
                                       fit: BoxFit.fitWidth,
                                     ),
@@ -160,12 +160,12 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                                             builder: (context) => PreviewFoto(
                                               urlFoto: blocProyek.detailProyek[0].foto2 == null
                                                   ? dataProvider.fotoNull
-                                                  : baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto2,
+                                                  : baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto2,
                                             ),
                                           ));
                                     },
                                     child: Image.network(
-                                      blocProyek.detailProyek[0].foto2 == null ? dataProvider.fotoNull : baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto2,
+                                      blocProyek.detailProyek[0].foto2 == null ? dataProvider.fotoNull : baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto2,
                                       width: MediaQuery.of(context).size.width,
                                       fit: BoxFit.fitWidth,
                                     ),
@@ -179,12 +179,12 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
                                             builder: (context) => PreviewFoto(
                                               urlFoto: blocProyek.detailProyek[0].foto3 == null
                                                   ? dataProvider.fotoNull
-                                                  : baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto3,
+                                                  : baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto3,
                                             ),
                                           ));
                                     },
                                     child: Image.network(
-                                      blocProyek.detailProyek[0].foto3 == null ? dataProvider.fotoNull : baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto3,
+                                      blocProyek.detailProyek[0].foto3 == null ? dataProvider.fotoNull : baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto3,
                                       width: MediaQuery.of(context).size.width,
                                       fit: BoxFit.fitWidth,
                                     ),
@@ -380,7 +380,7 @@ class _WidgetDetailProyekState extends State<WidgetDetailProyek> {
       var fileName = timeStamp.toString() + '.' + file.path.split('.').last.toString();
       var body = {'id': detailProyek.id, 'file_laporan_akhir': fileName};
       List<File> files = [file];
-      blocProyek.updateProyek(files, body);
+      blocProyek.updateFileLaporanProyek(files, body);
       blocProyek.getDetailProyekByParam({'id': blocProyek.detailProyek[0].id, 'aktif': '1'});
     }
   }

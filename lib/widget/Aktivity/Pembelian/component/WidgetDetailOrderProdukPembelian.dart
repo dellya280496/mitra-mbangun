@@ -52,7 +52,7 @@ class WidgetDetailOrderProdukPembelian extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(
                                   leading: Image.network(
-                                    baseURL+ '/api-v2/assets/toko/' + blocOrder.listOrderDetailProduk[j].foto,
+                                    baseURL+ '/'+ pathUrl +'/assets/toko/' + blocOrder.listOrderDetailProduk[j].foto,
                                     errorBuilder: (context, urlImage, error) {
                                       print(error.hashCode);
                                       return Image.asset('assets/logo.png');

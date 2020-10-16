@@ -254,7 +254,7 @@ class _WidgetUpdateProyekState extends State<WidgetUpdateProyek> {
                                             : blocProyek.detailProyek[0].foto1 == null
                                                 ? Container()
                                                 : Image.network(
-                                                    baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto1,
+                                                    baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto1,
                                                   ),
                                         Container(
                                           height: 20,
@@ -297,7 +297,7 @@ class _WidgetUpdateProyekState extends State<WidgetUpdateProyek> {
                                             : blocProyek.detailProyek[0].foto2 == null
                                                 ? Container()
                                                 : Image.network(
-                                                    baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto2,
+                                                    baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto2,
                                                   ),
                                         Container(
                                           height: 20,
@@ -339,7 +339,7 @@ class _WidgetUpdateProyekState extends State<WidgetUpdateProyek> {
                                             : blocProyek.detailProyek[0].foto3 == null
                                                 ? Container()
                                                 : Image.network(
-                                                    baseURL + '/api-v2/assets/toko/' + blocProyek.detailProyek[0].foto3,
+                                                    baseURL + '/'+ pathUrl +'/assets/toko/' + blocProyek.detailProyek[0].foto3,
                                                   ),
                                         Container(
                                           height: 20,
@@ -466,6 +466,7 @@ class _WidgetUpdateProyekState extends State<WidgetUpdateProyek> {
       'deskripsi': deskripsi.toString(),
       'status': status == null ? blocProyek.detailProyek[0].status.toString() : status.toString(),
     };
+    print(body);
     List<File> files = [foto, foto1, foto2];
     _formKey.currentState.save();
     if (_formKey.currentState.validate()) {

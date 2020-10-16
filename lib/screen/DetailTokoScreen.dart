@@ -36,7 +36,7 @@ class _DetailTokoScreenState extends State<DetailTokoScreen> {
   }
 
   setColor() async {
-    var a = _updatePaletteGenerator(region, baseURL + '/api-v2/assets/toko/' + widget.image);
+    var a = _updatePaletteGenerator(region, baseURL + '/'+ pathUrl +'/assets/toko/' + widget.image);
     a.then((value) {
       setState(() {
         bannerColor = value;
@@ -98,7 +98,7 @@ class _DetailTokoScreenState extends State<DetailTokoScreen> {
               child: CardSliverAppBar(
                 height: 200,
                 background: Image.network(
-                  baseURLMobile + "/api-v2/assets/toko/" + blocProduk.detailStore[0].fotoSampul,
+                  baseURLMobile + "/"+ pathUrl +"/assets/toko/" + blocProduk.detailStore[0].fotoSampul,
                   fit: BoxFit.cover,
                   errorBuilder: (context, urlImage, error) {
                     print(error.hashCode);
@@ -108,7 +108,7 @@ class _DetailTokoScreenState extends State<DetailTokoScreen> {
                 title: Text(blocProduk.detailStore[0].namaToko, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
                 titleDescription: Text(blocProduk.detailStore[0].jenisToko, style: TextStyle(color: Colors.black, fontSize: 11)),
                 card: NetworkImage(
-                  baseURL + '/api-v2/assets/toko/' + blocProduk.detailStore[0].foto,
+                  baseURL + '/'+ pathUrl +'/assets/toko/' + blocProduk.detailStore[0].foto,
                 ),
                 backButton: true,
                 backButtonColors: [Colors.white, Colors.black],

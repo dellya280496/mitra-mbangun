@@ -108,15 +108,21 @@ class _WidgetListProsesState extends State<WidgetListProses> {
                                       page: WidgetDetailProyek(
                                   )));
                             },
-                            leading: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,
+                            leading: Image.network(baseURL+ '/'+ pathUrl +'/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,
                                 errorBuilder: (context, urlImage, error) {
                               print(error.hashCode);
                               return Image.asset('assets/logo.png');
                             }),
                             title: Text(blocProyek.listBids[index].nama),
-                            subtitle: Text(
-                              Jiffy(DateTime.parse(blocProyek.listBids[index].createdAt.toString())).format("dd/MM/yyyy"),
-                              style: TextStyle(fontSize: 11, color: Colors.grey),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(blocProyek.listBids[index].noOrder),
+                                Text(
+                                  Jiffy(DateTime.parse(blocProyek.listBids[index].createdAt.toString())).format("dd/MM/yyyy"),
+                                  style: TextStyle(fontSize: 11, color: Colors.grey),
+                                ),
+                              ],
                             ),
                           ),
                         );

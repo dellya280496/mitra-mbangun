@@ -32,7 +32,7 @@ class WidgetOffialStore extends StatelessWidget {
               child: new Container(
                 child: new Center(
                   child: Image.network(
-                    baseURL+ '/api-v2/assets/toko/' + blocProduk.listOfficialStore[j].foto,
+                    baseURL+ '/'+ pathUrl +'/assets/toko/' + blocProduk.listOfficialStore[j].foto,
                     height: 60,
                     errorBuilder: (context, urlImage, error) {
                       print(error.hashCode);

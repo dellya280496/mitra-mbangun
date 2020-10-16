@@ -109,7 +109,7 @@ class _WidgetListSelesaiState extends State<WidgetListSelesai> {
                                       page: WidgetDetailProyek(
                                   )));
                             },
-                            leading: Image.network(baseURL+ '/api-v2/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,
+                            leading: Image.network(baseURL+ '/'+ pathUrl +'/assets/toko/' + blocProyek.listBids[index].foto1, width: 90, height: 90,
                                 errorBuilder: (context, urlImage, error) {
                               print(error.hashCode);
                               return Image.asset('assets/logo.png');

@@ -246,13 +246,13 @@ class WidgetRecentProyek extends StatelessWidget {
     if (url == null) {
       return SizedBox();
     } else {
-      var urlImage = baseURL + '/api-v2/assets/toko/' + url;
+      var urlImage = baseURL + '/'+ pathUrl +'/assets/toko/' + url;
       return Image.network(
         urlImage,
         fit: BoxFit.cover,
         errorBuilder: (context, urlImage, error) {
           print(error.hashCode);
-          return Image.network(baseURL + '/api-v2/assets/toko/No-image-found.jpg');
+          return Image.network(baseURL + '/'+ pathUrl +'/assets/toko/No-image-found.jpg');
         },
       );
     }

@@ -44,9 +44,6 @@ class BlocOrder extends ChangeNotifier {
     print(idToko);
     if (id != null) {
       _id_user_login = id;
-//      getOrderByIdUser(id);
-//      getCountSaleByParam({'id_toko': idToko.toString()});
-//      getCart();
     } else {
       _id_user_login = '0';
     }

@@ -51,7 +51,7 @@ class WidgetListPembayaran extends StatelessWidget {
                 child: ListTile(
                   contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   leading: Image.network(
-                    baseURL+ '/api-v2/assets/bank/' + "${element['icon']}",
+                    baseURL+ '/'+ pathUrl +'/assets/bank/' + "${element['icon']}",
                     height: 50,
                     width: 50,
                   ),
