@@ -11,6 +11,7 @@ import 'package:apps/providers/BlocProyek.dart';
 import 'package:apps/providers/DataProvider.dart';
 import 'package:apps/screen/LoginScreen.dart';
 import 'package:apps/screen/ProyekScreen.dart';
+import 'package:apps/screen/SplashScreen.dart';
 import 'package:apps/screen/TokoSayaScreen.dart';
 import 'package:apps/widget/Login/LoginWidget.dart';
 import 'package:apps/widget/Pendaftaran/WidgetTunggu.dart';
@@ -62,16 +63,7 @@ class ProfileScreen extends StatelessWidget {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : !blocAuth.isLogin
-                  ? Container(
-                      color: Colors.white,
-                      child: LoginWidget(
-                        primaryColor: Color(0xFFb16a085),
-                        backgroundColor: Colors.white,
-                        page: '/BottomNavBar',
-                      ),
-                    )
-                  : !blocAuth.isMitra
+              :!blocAuth.isMitra
                       ? WidgetTunggu()
                       : SafeArea(
                           child: Column(
@@ -99,7 +91,8 @@ class ProfileScreen extends StatelessWidget {
                                               blocProyek.clearlistProyeks();
                                               blocProyek.clearRecentProyek();
                                               Provider.of<BlocOrder>(context).clearCountOrder();
-                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                                              => SplashScreen()));
                                             },
                                             icon: Icon(Icons.exit_to_app, color: Colors.grey[400], size: 20.0),
                                           ),
@@ -125,9 +118,8 @@ class ProfileScreen extends StatelessWidget {
                                               height: 60.0,
                                               child: ClipOval(
                                                 child: Image.network(
-                                                  blocAuth.currentUser.photoUrl == null ? dataProvider.fotoNull : blocAuth.currentUser.photoUrl,
-                                                  fit: BoxFit.cover,
-                                                  width: 80,
+                                                   blocAuth.currentUserChat.avatar,
+                                                  fit: BoxFit.contain,
                                                 ),
                                               )),
                                         ),
@@ -156,30 +148,15 @@ class ProfileScreen extends StatelessWidget {
                                                             color: Colors.white,
                                                             fontWeight: FontWeight.w800,
                                                           ),
-                                                          text: blocAuth.currentUser.displayName),
+                                                          text: blocAuth.currentUserChat.name.toString()),
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 5),
-                                              child: RichText(
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                strutStyle: StrutStyle(fontSize: 12.0),
-                                                text: TextSpan(
-                                                  style: TextStyle(
-                                                    color: Colors.grey[300],
-                                                  ),
-                                                  text: blocAuth.currentUser.email,
-                                                ),
-                                              ),
-                                            ),
                                           ],
                                         ),
                                         IconButton(icon: Icon(Icons.edit, size: 20,color: Colors.white,), onPressed: (){
-
                                           Navigator.push(context, SlideRightRoute(page: WidgetUpdateProfile()));
                                         })
                                       ],

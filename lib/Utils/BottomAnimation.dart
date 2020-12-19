@@ -74,7 +74,6 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
   Timer timer;
   void _initializeTimer() {
     timer = Timer.periodic(const Duration(seconds: 50), (__) {
-      BlocOrder blocOrder = Provider.of<BlocOrder>(context);
       BlocAuth blocAuth = Provider.of<BlocAuth>(context);
       blocAuth.checkSession();
     });

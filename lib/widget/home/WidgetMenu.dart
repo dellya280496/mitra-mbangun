@@ -65,7 +65,7 @@ class WidgetMenu extends StatelessWidget {
   _launchURL(String url, context) async {
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     if (await canLaunch(url)) {
-      await launch(url + '?email=' + blocAuth.currentUser.email);
+      await launch(url + '?email=' + 'email');
     } else {
       throw 'Could not launch $url';
     }

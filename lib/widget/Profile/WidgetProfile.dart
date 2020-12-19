@@ -152,7 +152,7 @@ class MapScreenState extends State<WidgetProfile> with SingleTickerProviderState
                                           height: 100.0,
                                           child: ClipOval(
                                             child: Image.network(
-                                              blocAuth.currentUser.photoUrl,
+                                              dataProvider.fotoNull,
                                               fit: BoxFit.cover,
                                               width: 150,
                                             ),

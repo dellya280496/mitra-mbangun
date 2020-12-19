@@ -69,16 +69,7 @@ class _ProyekScreenState extends State<ProyekScreen> with TickerProviderStateMix
     // TODO: implement build
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
-    return !blocAuth.isLogin
-        ? Container(
-            color: Colors.white,
-            child: LoginWidget(
-              primaryColor: Color(0xFFb16a085),
-              backgroundColor: Colors.white,
-              page: '/BottomNavBar',
-            ),
-          )
-        : !blocAuth.isMitra
+    return !blocAuth.isMitra
             ? WidgetTunggu()
             : NotificationListener<ScrollNotification>(
                 onNotification: _handleScrollNotification,

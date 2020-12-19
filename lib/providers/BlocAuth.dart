@@ -4,6 +4,8 @@ import 'package:apps/Utils/LocalBindings.dart';
 import 'package:apps/models/JenisLayananMitra.dart';
 import 'package:apps/models/NotificationM.dart';
 import 'package:apps/models/UserMitra.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_session/flutter_session.dart';
@@ -12,7 +14,7 @@ import 'package:package_info/package_info.dart';
 
 class BlocAuth extends ChangeNotifier {
   BlocAuth() {
-    getCurrentUser();
+    checkSession();
   }
 
   bool _isLoading = false;
@@ -49,46 +51,17 @@ class BlocAuth extends ChangeNotifier {
   String get idUser => _idUser;
 
   bool get isLogin => _isLogin;
-  GoogleSignInAccount _currentUser;
-
-  GoogleSignInAccount get currentUser => _currentUser;
-
-  handleSignIn() async {
-    try {
-      var login = await _googleSignIn.signIn();
-      var fcm_token = FlutterSession().get('fcm_token');
-      fcm_token.then((value) async {
-        var queryString = {'username': login.email, 'id_google': login.id};
-        var result = await AuthRepository().googleSign(queryString);
-        if (result['meta']['success']) {
-          setFcmToken(result['data']['id_mitra'], value);
-          checkSession();
-        }
-        checkSession();
-      });
-      return true;
-    } catch (error) {
-      print(error);
-      return false;
-    }
-  }
-
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>['email'],
-  );
 
   handleSignOut() async {
-    _googleSignIn.disconnect().then((value) async {
-      LocalStorage.sharedInstance.deleteValue('id_mitra_login');
-      LocalStorage.sharedInstance.deleteValue('id_toko');
-      LocalStorage.sharedInstance.deleteValue('userData');
-      var fcm_token = FlutterSession().get('fcm_token');
-      fcm_token.then((value) async {
-        var param = {'fcm_token': value};
-        var result = await AuthRepository().deleteFcmToken(param);
-        print(param);
-      });
-      checkSession();
+    LocalStorage.sharedInstance.deleteValue('no_telp');
+    LocalStorage.sharedInstance.deleteValue('userData');
+    var fcm_token = FlutterSession().get('fcm_token');
+    fcm_token.then((value) async {
+      var param = {'fcm_token': value};
+      var result = await AuthRepository().deleteFcmToken(param);
+      print(param);
+    });
+    checkSession();
 //      _googleSignIn.isSignedIn().then((value) {
 //        if (value) {
 //          return true;
@@ -103,7 +76,7 @@ class BlocAuth extends ChangeNotifier {
 //          return false;
 //        }
 //      });
-    });
+//     });
   }
 
   create(body) async {
@@ -120,25 +93,21 @@ class BlocAuth extends ChangeNotifier {
     }
   }
 
-  getCurrentUser() {
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      _currentUser = account;
-      if (account != null) {
-        checkSession();
-      } else {
-        handleSignOut();
-      }
-    });
-    _googleSignIn.signInSilently();
-  }
+  // getCurrentUser() {
+  //   _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+  //     _currentUser = account;
+  //     if (account != null) {
+  //       checkSession();
+  //     } else {
+  //       handleSignOut();
+  //     }
+  //   });
+  //   _googleSignIn.signInSilently();
+  // }
 
   List<JenisLayananMitra> _listJenisLayananMitra = [];
 
   List<JenisLayananMitra> get listJenisLayananMitra => _listJenisLayananMitra;
-
-  Map<String, dynamic> _currentUserLogin = {};
-
-  Map<String, dynamic> get currentUserLogin => _currentUserLogin;
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -147,7 +116,13 @@ class BlocAuth extends ChangeNotifier {
     deviceData.then((value) async {
       var devices = value['name'] == null ? value['brand'] : value['name'];
       var system = value['systemName'] == null ? 'Android' : value['systemName'];
-      var param = {'id_mitra': id_mitra.toString(), 'fcm_token': token.toString(), 'device_name': devices, 'system_name': system, 'model': value['model']};
+      var param = {
+        'id_mitra': id_mitra.toString(),
+        'fcm_token': token.toString(),
+        'device_name': devices,
+        'system_name': system,
+        'model': value['model']
+      };
       var result = await AuthRepository().setFcmToken(param);
       print(result);
     });
@@ -156,35 +131,8 @@ class BlocAuth extends ChangeNotifier {
   checkSession() async {
     checkVersionApp();
     _isLoading = false;
+    getUserData();
     notifyListeners();
-    await Future.delayed(Duration(milliseconds: 1), () {
-      _googleSignIn.isSignedIn().then((value) async {
-        if (value) {
-          if (_currentUser == null) {
-            getCurrentUser();
-            _connection = true;
-            _isLoading = false;
-            _isLogin = false;
-            _isRegister = false;
-            notifyListeners();
-            return false;
-          } else {
-            getUserData();
-          }
-        } else {
-          _listJenisLayananMitra = [];
-          getCurrentUser();
-          getUserData();
-          _connection = true;
-          _isLogin = false;
-          _isLoading = false;
-          _isRegister = false;
-          _isMitra = false;
-          notifyListeners();
-          return false;
-        }
-      });
-    });
   }
 
   List<UserMitra> _detailMitra = [];
@@ -192,10 +140,16 @@ class BlocAuth extends ChangeNotifier {
   List<UserMitra> get detailMitra => _detailMitra;
 
   getUserData() async {
-    var queryString = {'username': _currentUser.email, 'id_google': _currentUser.id};
-    var result = await AuthRepository().googleSign(queryString);
+    var queryString = {'no_hp': _phoneNumber};
+    if (_phoneNumber != '') {
+      LocalStorage.sharedInstance.writeValue(key: 'no_telp', value: _phoneNumber);
+    }
+    var result = await AuthRepository().getMitraByParam(queryString);
     print(result);
-    if (result.toString() == '111' || result.toString() == '101' || result.toString() == 'Conncetion Error') {
+    if (result.toString() == '111' ||
+        result.toString() == '101' ||
+        result.toString() == 'Conncetion Error' ||
+        result['data'] == null) {
       _connection = false;
       _isLoading = false;
       notifyListeners();
@@ -203,61 +157,40 @@ class BlocAuth extends ChangeNotifier {
     } else {
       if (result['meta']['success']) {
         if (result['data']['aktif'] != '1') {
+          print('nonaktif');
           _isNonActive = true;
           _isLoading = false;
           _connection = true;
           _isLogin = false;
           notifyListeners();
-          await Future.delayed(Duration(milliseconds: 1), () {
-            handleSignOut();
-          });
           return true;
         } else {
-          if (result['data']['aktif_mitra'] == '0') {
-            Iterable list = result['jenis_layanan_mitra'];
-            _listJenisLayananMitra = list.map((model) => JenisLayananMitra.fromMap(model)).toList();
-            Iterable listMitra = [result['data']];
-            _detailMitra = listMitra.map((model) => UserMitra.fromMap(model)).toList();
-            _connection = true;
-            _token = result['token'];
-            _idToko = result['data']['id_toko'].toString();
-            LocalStorage.sharedInstance.writeValue(key: 'survey', value: result['data']['survey']);
-            _survey = result['data']['survey'] == "1" ? true : false;
-            LocalStorage.sharedInstance.writeValue(key: 'id_toko', value: result['data']['id_toko']);
-            LocalStorage.sharedInstance.writeValue(key: 'id_jenis_layanan', value: _listJenisLayananMitra.map((e) => e.id).toString());
-            LocalStorage.sharedInstance.writeValue(key: 'id_mitra_login', value: result['data']['id']);
-            _idUser = result['data']['id'];
-            _id_mitra = result['data']['id_mitra'];
-            _isMitra = false;
-            _isRegister = false;
-            _isLoading = false;
-            _isLogin = true;
-            notifyListeners();
-            return true;
-          } else {
-            Iterable list = result['jenis_layanan_mitra'];
-            _listJenisLayananMitra = list.map((model) => JenisLayananMitra.fromMap(model)).toList();
-            Iterable listMitra = [result['data']];
-            _detailMitra = listMitra.map((model) => UserMitra.fromMap(model)).toList();
-            _connection = true;
-            _token = result['token'];
-            _idToko = result['data']['id_toko'].toString();
-            LocalStorage.sharedInstance.writeValue(key: 'survey', value: result['data']['survey']);
-            _survey = result['data']['survey'] == "1" ? true : false;
-            LocalStorage.sharedInstance.writeValue(key: 'id_toko', value: result['data']['id_toko'] == null ? '0' : result['data']['id_toko']);
-            LocalStorage.sharedInstance.writeValue(key: 'id_jenis_layanan', value: _listJenisLayananMitra.map((e) => e.id).toString());
-            LocalStorage.sharedInstance.writeValue(key: 'id_mitra_login', value: result['data']['id']);
-            _idUser = result['data']['id'];
-            _id_mitra = result['data']['id_mitra'];
-            _isRegister = false;
-            _isLoading = false;
-            _isLogin = true;
-            _isMitra = true;
-            notifyListeners();
-            return true;
-          }
+          setFirestore(result);
+          print('aktif');
+          Iterable list = result['jenis_layanan_mitra'];
+          _listJenisLayananMitra = list.map((model) => JenisLayananMitra.fromMap(model)).toList();
+          Iterable listMitra = [result['data']];
+          _detailMitra = listMitra.map((model) => UserMitra.fromMap(model)).toList();
+          _connection = true;
+          _token = result['token'];
+          _idToko = result['data']['id_toko'].toString();
+          LocalStorage.sharedInstance.writeValue(key: 'survey', value: result['data']['survey']);
+          _survey = result['data']['survey'] == "1" ? true : false;
+          LocalStorage.sharedInstance
+              .writeValue(key: 'id_jenis_layanan', value: _listJenisLayananMitra.map((e) => e.id).toString());
+          LocalStorage.sharedInstance.writeValue(key: 'id_mitra_login', value: result['data']['id']);
+          _idUser = result['data']['id'];
+          _id_mitra = result['data']['id_mitra'];
+          _isRegister = false;
+          _isLoading = false;
+          _isLogin = true;
+          _isMitra = true;
+          notifyListeners();
+          return true;
+          // }
         }
       } else {
+        print('meta');
         _connection = true;
         _isRegister = true;
         _isLoading = false;
@@ -368,5 +301,36 @@ class BlocAuth extends ChangeNotifier {
     print(result);
     getNotification();
     notifyListeners();
+  }
+
+  String _phoneNumber = '';
+
+  String get phoneNumber => _phoneNumber;
+
+  setPhoneNumber(phoneNumber) {
+    _phoneNumber = phoneNumber;
+    notifyListeners();
+  }
+
+  ChatUser _currentUserChat;
+
+  ChatUser get currentUserChat => _currentUserChat;
+
+  setFirestore(result) async {
+    var dataUser = result['data'];
+    var userCheck = await FirebaseFirestore.instance.collection('users').doc(dataUser['no_hp']).get();
+    final ChatUser data = ChatUser(
+      name: dataUser['nama'].toString(),
+      avatar: dataUser['foto'] == null ? 'https://mbangun.id//api-v2//assets/kategori/worker.png' : dataUser['foto'],
+      uid: dataUser['no_hp'].toString().replaceAll('+', ''),
+    );
+    if (!userCheck.exists) {
+      await FirebaseFirestore.instance.collection('users').document(data.uid).set(data.toJson());
+      _currentUserChat = data;
+      notifyListeners();
+    } else {
+      _currentUserChat = data;
+      notifyListeners();
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:apps/Utils/BottomAnimation.dart';
+import 'package:apps/Utils/LocalBindings.dart';
 import 'package:apps/Utils/SettingApp.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _PendaftaranState extends State<WidgetPendaftaran> {
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     // TODO: implement build
     return WebviewScaffold(
-      url: baseURLMobile + '/pendaftaranmitra?email=' + blocAuth.currentUser.email.toString() + '&id=' + blocAuth.currentUser.id.toString(),
+      url: baseURLMobile + '/pendaftaranmitra?no_hp=' + blocAuth.phoneNumber.toString(),
       withZoom: false,
       clearCache: true,
       javascriptChannels: <JavascriptChannel>[
@@ -54,6 +55,7 @@ class _PendaftaranState extends State<WidgetPendaftaran> {
                   blocAuth.setFcmToken(result['meta']['id_mitra'].toString(), value.toString());
                 });
                 blocAuth.checkSession();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomAnimateBar()));
               }
             }),
       ].toSet(),

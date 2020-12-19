@@ -1,5 +1,7 @@
 import 'package:apps/Utils/SettingApp.dart';
+import 'package:apps/main.dart';
 import 'package:apps/providers/BlocAuth.dart';
+import 'package:apps/screen/SplashScreen.dart';
 import 'package:apps/widget/Pendaftaran/WidgetPendaftaran.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -43,6 +45,7 @@ class _PendaftaranScreenState extends State<PendaftaranScreen> {
         IconButton(
           onPressed: () {
             blocAuth.handleSignOut();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyApp()));
           },
           icon: Icon(Icons.exit_to_app, color: Colors.grey[400], size: 20.0),
         ),

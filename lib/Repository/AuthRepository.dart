@@ -37,4 +37,19 @@ class AuthRepository {
     final response = await _helper.post("user/insert", body);
     return response;
   }
+
+  Future checkOtp(body) async {
+    final response = await _helper.get("otp/checkOtp", body);
+    return response;
+  }
+
+  Future getMitraByParam(param) async {
+    final response = await _helper.get("mitra/getByParam", param);
+    return response;
+  }
+
+  Future sendOtp(body) async {
+    final response = await _helper.post("otp/insert", body);
+    return response;
+  }
 }

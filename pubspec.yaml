@@ -11,7 +11,7 @@ description: Aplikasi m-bangun
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.8+10
+version: 1.0.9+11
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -54,7 +54,7 @@ dependencies:
   bezier_chart: ^1.0.16
   jiffy: ^3.0.1
   floating_search_bar: ^0.3.0
-#  fl_chart: ^0.8.7
+  #  fl_chart: ^0.8.7
   flutter_phone_direct_caller: ^1.0.1
   package_info: ^0.4.0+9
   url_launcher: ^5.1.4
@@ -91,6 +91,12 @@ dependencies:
   image_cropper: ^1.3.1
   file_picker: ^2.0.6
   flutter_uploader: ^1.2.0
+  pin_code_fields: ^6.0.1
+  flare_flutter: ^2.0.6
+  firebase_auth:
+  cloud_firestore:
+  firebase_storage:
+  dash_chat: ^1.1.15
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
@@ -112,6 +118,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - data/
+    - assets/otp.flr
+    - assets/slide1.png
+    - assets/slide2.png
     - assets/logo.png
     - assets/icons/verified.png
     - assets/icons/worker.png

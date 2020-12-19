@@ -42,7 +42,7 @@ class _PengajuanState extends State<Pengajuan> {
       body: Builder(
         builder: (BuildContext context) {
           return WebviewScaffold(
-            url: baseURLMobile+'/welcome?email=' + blocAuth.currentUser.email.toString(),
+            url: baseURLMobile+'/welcome?email=' + 'email',
             withZoom: true,
             javascriptChannels: <JavascriptChannel>[
               JavascriptChannel(

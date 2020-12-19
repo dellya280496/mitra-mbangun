@@ -94,37 +94,26 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
         ],
       ),
     );
-    return !blocAuth.connection
-        ? WidgetErrorConection()
-        : !blocAuth.isLogin
-            ? Container(
-                color: Colors.white,
-                child: LoginWidget(
-                  primaryColor: Colors.white,
-                  backgroundColor: Colors.white,
-                  page: '/BottomNavBar',
+    return !blocAuth.isMitra
+        ? Scaffold(body: WidgetTunggu())
+        : DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: appBar,
+              body: Container(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Container(child: WidgetListPenawaran(title: 'penawaran')),
+                    Container(child: WidgetListProses(title: 'proses')),
+                    Container(
+                        child: WidgetListSelesai(
+                      title: 'selesai',
+                    )),
+                  ],
                 ),
-              )
-            : !blocAuth.isMitra
-                ? Scaffold(body: WidgetTunggu())
-                : DefaultTabController(
-                    length: 3,
-                    child: Scaffold(
-                      appBar: appBar,
-                      body: Container(
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            Container(child: WidgetListPenawaran(title: 'penawaran')),
-                            Container(child: WidgetListProses(title: 'proses')),
-                            Container(
-                                child: WidgetListSelesai(
-                              title: 'selesai',
-                            )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+              ),
+            ),
+          );
   }
 }

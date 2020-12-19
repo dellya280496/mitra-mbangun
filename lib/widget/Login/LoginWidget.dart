@@ -120,26 +120,26 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           onPressed: () async {
                                             BlocAuth blocAuth = Provider.of<BlocAuth>(context);
                                             BlocProyek blocProyek = Provider.of<BlocProyek>(context);
-                                            var result = blocAuth.handleSignIn();
-                                            result.then((value) {
-                                              print(value);
-                                              if (value) {
-                                                var idJenisLayanan = blocAuth.listJenisLayananMitra.map((e) => e.id).toString();
-                                                var param = {
-                                                  'aktif': '1',
-                                                  'status': "('setuju')",
-                                                  'status_pembayaran_survey': 'terbayar',
-                                                  'limit': '6',
-                                                  'offset': blocProyek.offset.toString(),
-                                                  'id_jenis_layanan': idJenisLayanan
-                                                };
-                                                blocProyek.getRecentProyek(param);
-                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
-                                              } else {
-//                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomAnimateBar()));
-                                                blocAuth.checkSession();
-                                              }
-                                            });
+                                            // var result = blocAuth.handleSignIn();
+//                                             result.then((value) {
+//                                               print(value);
+//                                               if (value) {
+//                                                 var idJenisLayanan = blocAuth.listJenisLayananMitra.map((e) => e.id).toString();
+//                                                 var param = {
+//                                                   'aktif': '1',
+//                                                   'status': "('setuju')",
+//                                                   'status_pembayaran_survey': 'terbayar',
+//                                                   'limit': '6',
+//                                                   'offset': blocProyek.offset.toString(),
+//                                                   'id_jenis_layanan': idJenisLayanan
+//                                                 };
+//                                                 blocProyek.getRecentProyek(param);
+//                                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+//                                               } else {
+// //                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomAnimateBar()));
+//                                                 blocAuth.checkSession();
+//                                               }
+//                                             });
                                           },
                                           icon: Icon(FontAwesomeIcons.google),
                                         ),

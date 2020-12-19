@@ -61,7 +61,7 @@ class _PengajuanProjectState extends State<PengajuanProject> {
       body: Builder(
         builder: (BuildContext context) {
           return WebviewScaffold(
-            url: baseURLMobile+'/Projek?email=' + blocAuth.currentUser.email.toString(),
+            url: baseURLMobile+'/Projek?email=' + 'email',
             withZoom: false,
             clearCache: true,
             scrollBar: true,
