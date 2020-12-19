@@ -45,7 +45,7 @@ class _PendaftaranState extends State<WidgetPendaftaran> {
       javascriptChannels: <JavascriptChannel>[
         JavascriptChannel(
             name: 'Print',
-            onMessageReceived: (JavascriptMessage msg) {
+            onMessageReceived: (JavascriptMessage msg) async {
               print('respoonse');
               var result = json.decode(msg.message);
               print(result['meta']['id_mitra']);
@@ -54,8 +54,9 @@ class _PendaftaranState extends State<WidgetPendaftaran> {
                 fcm_token.then((value) async {
                   blocAuth.setFcmToken(result['meta']['id_mitra'].toString(), value.toString());
                 });
-                blocAuth.checkSession();
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomAnimateBar()));
+                await blocAuth.checkSession();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => BottomAnimateBar()), (Route<dynamic> route) => false);
               }
             }),
       ].toSet(),

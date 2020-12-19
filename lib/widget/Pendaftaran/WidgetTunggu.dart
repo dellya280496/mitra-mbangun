@@ -28,7 +28,8 @@ class WidgetTunggu extends StatelessWidget {
               blocProyek.clearlistProyeks();
               blocProyek.clearRecentProyek();
               Provider.of<BlocOrder>(context).clearCountOrder();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => MyApp()), (Route<dynamic> route) => false);
             },
             icon: Icon(Icons.exit_to_app, color: Colors.grey[400], size: 20.0),
           ),

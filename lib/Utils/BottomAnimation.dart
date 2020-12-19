@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:apps/Utils/LocalBindings.dart';
 import 'package:apps/main.dart';
 import 'package:apps/providers/BlocAuth.dart';
 import 'package:apps/providers/BlocOrder.dart';
@@ -51,7 +52,8 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
 //        _navigateToItemDetail(message);
       },
     );
-    _firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: true));
     _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
@@ -64,7 +66,7 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
       BlocProyek blocProyek = Provider.of<BlocProyek>(context);
       BlocAuth blocAuth = Provider.of<BlocAuth>(context);
       if (blocAuth.survey) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ProfileScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
       } else {
         currentScreen = HomeScreen();
       }
@@ -72,19 +74,25 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
   }
 
   Timer timer;
-  void _initializeTimer() {
-    timer = Timer.periodic(const Duration(seconds: 50), (__) {
-      BlocAuth blocAuth = Provider.of<BlocAuth>(context);
+
+  void _initializeTimer() async {
+    BlocAuth blocAuth = await Provider.of<BlocAuth>(context);
+    if (blocAuth.phoneNumber != '') {
+      LocalStorage.sharedInstance.writeValue(key: 'no_telp', value: blocAuth.phoneNumber);
+    }
+    timer = Timer.periodic(const Duration(seconds: 50), (__) async {
       blocAuth.checkSession();
     });
   }
 
   void _requestIOSPermissions() {
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
   }
 
   void _configureDidReceiveLocalNotificationSubject() {
@@ -126,13 +134,17 @@ class _BottomAnimateBarState extends State<BottomAnimateBar> {
 
   Future<void> _showNotification(message) async {
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
-    var androidPlatformChannelSpecifics =
-    AndroidNotificationDetails('your channel id', 'your channel name', 'your channel description', importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(0, message['notification']['title'], message['notification']['body'], platformChannelSpecifics, payload: 'item x');
+    await flutterLocalNotificationsPlugin.show(
+        0, message['notification']['title'], message['notification']['body'], platformChannelSpecifics,
+        payload: 'item x');
     blocAuth.getNotification();
   }
+
   @override
   void dispose() {
     super.dispose();

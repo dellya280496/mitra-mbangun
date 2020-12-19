@@ -59,14 +59,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   checkSession() async {
     final provider = await Provider.of<BlocAuth>(context, listen: false);
     var noTelp = await LocalStorage.sharedInstance.readValue('no_telp');
-    print(noTelp.toString()+ ' notelp');
+    print(noTelp.toString() + ' notelp');
     if (noTelp != null) {
       provider.setPhoneNumber(noTelp);
       final result = Provider.of<BlocAuth>(context).getUserData();
       result.then((value) {
-      print(value.toString()+ ' respons data');
+        print(value.toString() + ' respons data');
         if (value) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomAnimateBar()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => BottomAnimateBar()), (Route<dynamic> route) => false);
         } else {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PendaftaranScreen()));
         }

@@ -86,13 +86,13 @@ class ProfileScreen extends StatelessWidget {
                                       Row(
                                         children: [
                                           IconButton(
-                                            onPressed: () {
-                                              blocAuth.handleSignOut();
-                                              blocProyek.clearlistProyeks();
-                                              blocProyek.clearRecentProyek();
-                                              Provider.of<BlocOrder>(context).clearCountOrder();
+                                            onPressed: () async{
+                                             await blocAuth.handleSignOut();
+                                             await blocProyek.clearlistProyeks();
+                                             await blocProyek.clearRecentProyek();
+                                             await Provider.of<BlocOrder>(context).clearCountOrder();
                                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
-                                              => SplashScreen()));
+                                              => MyApp()));
                                             },
                                             icon: Icon(Icons.exit_to_app, color: Colors.grey[400], size: 20.0),
                                           ),
@@ -151,7 +151,22 @@ class ProfileScreen extends StatelessWidget {
                                                           text: blocAuth.currentUserChat.name.toString()),
                                                     ),
                                                   ),
+
                                                 ],
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 5),
+                                              child: RichText(
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                strutStyle: StrutStyle(fontSize: 12.0),
+                                                text: TextSpan(
+                                                  style: TextStyle(
+                                                    color: Colors.grey[300],
+                                                  ),
+                                                  text: blocAuth.detailMitra[0].email,
+                                                ),
                                               ),
                                             ),
                                           ],

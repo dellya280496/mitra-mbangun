@@ -295,10 +295,10 @@ class BlocProfile extends ChangeNotifier {
     }
   }
 
-  updateProfil(body) async {
+  updateProfil(List files,body) async {
     _isLoading = true;
     notifyListeners();
-    var result = await UserRepository().updateProfil(body);
+    var result = await UserRepository().updateProfil(files, body);
     print(result);
     if (result.toString() == '111' || result.toString() == '101' || result.toString() == '405' || result.toString() == '8') {
       _connection = false;

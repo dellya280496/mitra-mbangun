@@ -8,6 +8,7 @@ import 'package:apps/providers/BlocProduk.dart';
 import 'package:apps/providers/BlocProfile.dart';
 import 'package:apps/providers/BlocProyek.dart';
 import 'package:apps/providers/DataProvider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,11 +24,9 @@ class WidgetUpdateProfile extends StatefulWidget {
 }
 
 class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
-  String namaBank, noRekening, namaPemilikRekening;
+  String namaBank, noRekening, namaPemilikRekening, nama;
 
   File foto;
-
-  File foto1;
 
   bool success = false;
 
@@ -37,13 +36,12 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProduk blocProduk = Provider.of<BlocProduk>(context);
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
     BlocProfile blocProfile = Provider.of<BlocProfile>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('Data Rekening'),
+        title: Text('Data Profile'),
         actions: [
           IconButton(
             icon: Icon(
@@ -60,8 +58,8 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
         ],
       ),
       body: ModalProgressHUD(
-        inAsyncCall: blocProduk.isLoading,
-        child:SingleChildScrollView(
+        inAsyncCall: blocProfile.isLoading,
+        child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Padding(
@@ -72,16 +70,136 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
                 children: [
                   success
                       ? SnackBarLauncher(
-                    error: 'Berhasil ditambahkan',
-                    color: Colors.green,
-                  )
+                          error: 'Berhasil ditambahkan',
+                          color: Colors.green,
+                        )
                       : Container(),
                   error
                       ? SnackBarLauncher(
-                    error: 'Tidak ada perubahan',
-                    color: Colors.red,
-                  )
+                          error: 'Tidak ada perubahan',
+                          color: Colors.red,
+                        )
                       : Container(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: 20,
+                        ),
+                        foto != null
+                            ? Image.file(
+                                foto,
+                                fit: BoxFit.fitHeight,
+                                alignment: Alignment.topCenter,
+                                width: 80,
+                                height: 80,
+                              )
+                            : Image.network(
+                                blocAuth.detailMitra[0].foto,
+                                fit: BoxFit.fitHeight,
+                                alignment: Alignment.topCenter,
+                                width: 80,
+                                height: 80,
+                              ),
+                        Container(
+                          height: 20,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: IconButton(
+                            icon: Icon(Icons.camera_alt),
+                            onPressed: () {
+                              _openImagePickerModal(context, 'foto');
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Text(
+                    'Data Diri',
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
+                  Container(
+                    height: 50,
+                    child: TextFormField(
+                      initialValue: blocAuth.detailMitra[0].nama,
+                      onSaved: (value) {
+                        setState(() {
+                          nama = value;
+                        });
+                      },
+                      keyboardType: TextInputType.text,
+                      validator: (String arg) {
+                        if (arg.length < 1)
+                          return 'Nama';
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nama',
+                        labelText: 'Nama',
+                        suffixIcon: Icon(Icons.account_box),
+                        errorStyle: TextStyle(fontSize: 9),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    child: TextFormField(
+                      enabled: false,
+                      initialValue: blocAuth.detailMitra[0].email,
+                      keyboardType: TextInputType.text,
+                      validator: (String arg) {
+                        if (arg.length < 1)
+                          return 'Email';
+                        else
+                          return null;
+                      },
+                      style: TextStyle(color: Colors.grey),
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        labelText: 'Email',
+                        suffixIcon: Icon(Icons.mail),
+                        errorStyle: TextStyle(fontSize: 9),
+                        // labelStyle: TextStyle(fontSize: 12),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    child: TextFormField(
+                      enabled: false,
+                      initialValue: blocAuth.detailMitra[0].noHp,
+                      keyboardType: TextInputType.text,
+                      validator: (String arg) {
+                        if (arg.length < 1)
+                          return 'No.Telp';
+                        else
+                          return null;
+                      },
+                      style: TextStyle(color: Colors.grey),
+                      decoration: InputDecoration(
+                        hintText: 'No.Telp',
+                        labelText: 'No.Telp',
+                        suffixIcon: Icon(Icons.phone),
+                        errorStyle: TextStyle(fontSize: 9),
+                        // labelStyle: TextStyle(fontSize: 12),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Text(
+                    'Data Bank',
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
                   Container(
                     height: 80,
                     child: TextFormField(
@@ -102,7 +220,7 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
                         hintText: 'Nama Bank',
                         labelText: 'Nama Bank',
                         errorStyle: TextStyle(fontSize: 9),
-                        labelStyle: TextStyle(fontSize: 16),
+                        suffixIcon: Icon(Icons.credit_card),
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                     ),
@@ -127,7 +245,7 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
                         hintText: 'No.Rekening',
                         labelText: 'No.Rekening',
                         errorStyle: TextStyle(fontSize: 9),
-                        labelStyle: TextStyle(fontSize: 16),
+                        suffixIcon: Icon(Icons.link),
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                     ),
@@ -152,13 +270,16 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
                         hintText: 'Nama Pemilik Rekening',
                         labelText: 'Nama Pemilik Rekening',
                         errorStyle: TextStyle(fontSize: 9),
-                        labelStyle: TextStyle(fontSize: 16),
+                        suffixIcon: Icon(Icons.accessibility_sharp),
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                     ),
                   ),
                   Center(
-                    child: Text('Silahkan lengkapi data rekening terlebih dahulu.',style: TextStyle(color: Colors.red),),
+                    child: Text(
+                      'Silahkan lengkapi data rekening terlebih dahulu.',
+                      style: TextStyle(color: Colors.red),
+                    ),
                   )
                 ],
               ),
@@ -204,16 +325,25 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
           );
         });
   }
+
   void _simpan() async {
     BlocProfile blocProfile = Provider.of<BlocProfile>(context);
     BlocAuth blocAuth = Provider.of<BlocAuth>(context);
+    String fileNameFoto;
+    if (foto != null) {
+      fileNameFoto = foto.path.split('/').last;
+    } else {
+      fileNameFoto = blocAuth.detailMitra[0].foto.replaceAll('http://mbangun.id/api-v2/assets/mitra/foto/', '/');
+    }
     var body = {
       'id': blocAuth.detailMitra[0].idMitra.toString(),
+      'foto': fileNameFoto.toString(),
       'nama_bank': namaBank.toString(),
       'no_rekening': noRekening.toString(),
       'nama_pemilik_rekening': namaPemilikRekening.toString()
     };
-    var result = await blocProfile.updateProfil(body);
+    List<File> files = [foto];
+    var result = await blocProfile.updateProfil(files, body);
     if (result['meta']['success']) {
       setState(() {
         success = true;
@@ -222,6 +352,10 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
         Navigator.pop(context);
       });
       blocAuth.checkSession();
+      var update = await FirebaseFirestore.instance.collection('users').doc(blocAuth.currentUserChat.uid).get();
+      var fotoUser =
+      update.reference
+          .update({'avatar': 'https://mbangun.id/api-v2/assets/mitra/foto/' + fileNameFoto.toString(), 'name': nama});
     } else {
       setState(() {
         error = true;
@@ -237,39 +371,47 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
   void _getImage(BuildContext context, ImageSource source, param) async {
     File image = await ImagePicker.pickImage(
       source: source,
-      maxHeight: 1000, maxWidth: 1000,
+      maxHeight: 1000,
+      maxWidth: 1000,
       imageQuality: 50,
     );
     if (param == 'foto') {
       setState(() {
         foto = image;
       });
-    } else if (param == 'foto1') {
-      setState(() {
-        foto1 = image;
-      });
     }
     Navigator.pop(context);
   }
+
   Future<Null> _cropImage(imageFile, context, TagihanM param) async {
     DataProvider dataProvider = Provider.of<DataProvider>(context);
     BlocProyek blocProyek = Provider.of<BlocProyek>(context);
     File croppedFile = await ImageCropper.cropImage(
         sourcePath: imageFile.path,
         aspectRatioPresets: Platform.isAndroid
-            ? [CropAspectRatioPreset.square, CropAspectRatioPreset.ratio3x2, CropAspectRatioPreset.original, CropAspectRatioPreset.ratio4x3, CropAspectRatioPreset.ratio16x9]
+            ? [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
             : [
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio5x3,
-          CropAspectRatioPreset.ratio5x4,
-          CropAspectRatioPreset.ratio7x5,
-          CropAspectRatioPreset.ratio16x9
-        ],
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
         androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Cropper', toolbarColor: Colors.deepOrange, toolbarWidgetColor: Colors.white, initAspectRatio: CropAspectRatioPreset.original, lockAspectRatio: false),
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
         iosUiSettings: IOSUiSettings(
           title: 'Cropper',
         ));

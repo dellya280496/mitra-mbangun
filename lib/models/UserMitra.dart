@@ -92,7 +92,7 @@ class UserMitra {
     userMitraBean.statusUser = map['status_user'];
     userMitraBean.aktif = map['aktif'];
     userMitraBean.foto = map['foto'];
-    userMitraBean.idMitra = map['id_mitra'];
+    userMitraBean.idMitra = map['id'];
     userMitraBean.username = map['username'];
     userMitraBean.id = map['id'];
     userMitraBean.aktifMitra = map['aktif_mitra'];

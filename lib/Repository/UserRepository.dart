@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:apps/Api/ApiBaseHelper.dart';
+import 'package:apps/Api/ApiOrderJson.dart';
 
 class UserRepository {
   final String _apiKey = "Paste your api key here";
@@ -157,8 +158,8 @@ class UserRepository {
     return response;
   }
 
-  Future updateProfil(body) async {
-    final response = await _helper.post("user/updateProfileMitra", body);
+  Future updateProfil(files, body) async {
+    final response = await _helper.multipart("user/updateProfileMitra", files, body);
     return response;
   }
 

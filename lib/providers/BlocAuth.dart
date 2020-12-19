@@ -55,11 +55,17 @@ class BlocAuth extends ChangeNotifier {
   handleSignOut() async {
     LocalStorage.sharedInstance.deleteValue('no_telp');
     LocalStorage.sharedInstance.deleteValue('userData');
+    _isNonActive = true;
+    _isLoading = false;
+    _connection = true;
+    _isLogin = false;
+    _isMitra = false;
+    _phoneNumber = '';
     var fcm_token = FlutterSession().get('fcm_token');
     fcm_token.then((value) async {
       var param = {'fcm_token': value};
       var result = await AuthRepository().deleteFcmToken(param);
-      print(param);
+      print(result);
     });
     checkSession();
 //      _googleSignIn.isSignedIn().then((value) {
@@ -141,9 +147,6 @@ class BlocAuth extends ChangeNotifier {
 
   getUserData() async {
     var queryString = {'no_hp': _phoneNumber};
-    if (_phoneNumber != '') {
-      LocalStorage.sharedInstance.writeValue(key: 'no_telp', value: _phoneNumber);
-    }
     var result = await AuthRepository().getMitraByParam(queryString);
     print(result);
     if (result.toString() == '111' ||
@@ -162,6 +165,7 @@ class BlocAuth extends ChangeNotifier {
           _isLoading = false;
           _connection = true;
           _isLogin = false;
+          _isMitra = false;
           notifyListeners();
           return true;
         } else {
@@ -195,6 +199,7 @@ class BlocAuth extends ChangeNotifier {
         _isRegister = true;
         _isLoading = false;
         _isLogin = false;
+        _isMitra = false;
         notifyListeners();
         return false;
       }
