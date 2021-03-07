@@ -201,7 +201,7 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
                     style: TextStyle(color: Colors.grey, fontSize: 18),
                   ),
                   Container(
-                    height: 80,
+                    height: 50,
                     child: TextFormField(
                       initialValue: blocAuth.detailMitra[0].namaBank,
                       onSaved: (value) {
@@ -226,7 +226,7 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
                     ),
                   ),
                   Container(
-                    height: 80,
+                    height: 50,
                     child: TextFormField(
                       initialValue: blocAuth.detailMitra[0].noRekening,
                       onSaved: (value) {
@@ -251,7 +251,7 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
                     ),
                   ),
                   Container(
-                    height: 80,
+                    height: 50,
                     child: TextFormField(
                       initialValue: blocAuth.detailMitra[0].namaPemilikRekening,
                       onSaved: (value) {
@@ -333,16 +333,18 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
     if (foto != null) {
       fileNameFoto = foto.path.split('/').last;
     } else {
-      fileNameFoto = blocAuth.detailMitra[0].foto.replaceAll('http://mbangun.id/api-v2/assets/mitra/foto/', '/');
+      fileNameFoto = blocAuth.detailMitra[0].foto.replaceAll('http://mbangun.id/api-v2/assets/mitra/foto/', '');
     }
     var body = {
       'id': blocAuth.detailMitra[0].idMitra.toString(),
       'foto': fileNameFoto.toString(),
       'nama_bank': namaBank.toString(),
+      'nama': nama.toString(),
       'no_rekening': noRekening.toString(),
       'nama_pemilik_rekening': namaPemilikRekening.toString()
     };
     List<File> files = [foto];
+    print(body);
     var result = await blocProfile.updateProfil(files, body);
     if (result['meta']['success']) {
       setState(() {
@@ -355,7 +357,7 @@ class _WidgetUpdateProfileState extends State<WidgetUpdateProfile> {
       var update = await FirebaseFirestore.instance.collection('users').doc(blocAuth.currentUserChat.uid).get();
       var fotoUser =
       update.reference
-          .update({'avatar': 'https://mbangun.id/api-v2/assets/mitra/foto/' + fileNameFoto.toString(), 'name': nama});
+          .update({'avatar': 'http://mbangun.id/api-v2/assets/mitra/foto/' + fileNameFoto.toString(), 'name': nama});
     } else {
       setState(() {
         error = true;

@@ -6,6 +6,7 @@ import 'package:apps/models/NotificationM.dart';
 import 'package:apps/models/UserMitra.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_session/flutter_session.dart';
@@ -16,7 +17,7 @@ class BlocAuth extends ChangeNotifier {
   BlocAuth() {
     checkSession();
   }
-
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   bool _isLoading = false;
   bool _isLogin = false;
   String _statusToko = '0';
@@ -51,6 +52,64 @@ class BlocAuth extends ChangeNotifier {
   String get idUser => _idUser;
 
   bool get isLogin => _isLogin;
+
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+  GoogleSignInAccount _currentUser;
+
+  GoogleSignInAccount get googleCurrentUser => _currentUser;
+
+  UserCredential _userCredential;
+
+  Future _getUserGoogle() async {
+    _googleSignIn.signInSilently();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
+      if (account != null) {
+        _currentUser = account;
+        final GoogleSignInAuthentication googleAuth = await _currentUser.authentication;
+
+        final GoogleAuthCredential googleAuthCredential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        //Authenticate against Firebase with Google credentials
+        await firebaseAuth
+            .signInWithCredential(googleAuthCredential)
+            .then((userCredential) => {_userCredential = userCredential});
+      }
+      checkSession();
+    });
+    // var setData = await _googleSignIn.currentUser;
+    print(_googleSignIn.currentUser == null);
+    if (_googleSignIn.currentUser != null) {
+      _currentUser = _googleSignIn.currentUser;
+      final GoogleSignInAuthentication googleAuth = await _googleSignIn.currentUser.authentication;
+
+      final GoogleAuthCredential googleAuthCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      //Authenticate against Firebase with Google credentials
+      await firebaseAuth
+          .signInWithCredential(googleAuthCredential)
+          .then((userCredential) => {_userCredential = userCredential});
+      getUserData();
+    } else {
+      // handleSignIn();
+    }
+  }
+
+  Future handleSignIn() async {
+    _googleSignIn.signInSilently();
+    try {
+      await _googleSignIn.signIn();
+      _getUserGoogle();
+    } catch (error) {
+      print(error);
+    }
+  }
+
 
   handleSignOut() async {
     LocalStorage.sharedInstance.deleteValue('no_telp');

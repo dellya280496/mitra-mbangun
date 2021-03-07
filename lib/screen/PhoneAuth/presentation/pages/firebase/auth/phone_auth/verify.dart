@@ -304,13 +304,16 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
         ),
       )..show(context);
       blocAuth.setPhoneNumber("62" + provider.phoneNumberController.text);
-      var userData = await Provider.of<BlocAuth>(context).getUserData();
-      print(userData.toString()+ ' chek data');
-      if (userData) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => BottomAnimateBar()), (Route<dynamic> route) => false);
-      }else{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PendaftaranScreen()));
+      await blocAuth.handleSignIn();
+      if (blocAuth.googleCurrentUser != null) {
+        var userData = await Provider.of<BlocAuth>(context).getUserData();
+        print(userData.toString() + ' chek data');
+        if (userData) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => BottomAnimateBar()), (Route<dynamic> route) => false);
+        } else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PendaftaranScreen()));
+        }
       }
     } else {
       Flushbar(

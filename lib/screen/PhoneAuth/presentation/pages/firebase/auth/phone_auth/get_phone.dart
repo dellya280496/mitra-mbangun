@@ -254,20 +254,20 @@ class _PhoneAuthGetPhoneState extends State<PhoneAuthGetPhone> {
       'no_telp':
           '62' + phoneAuthDataProvider.phoneNumberController.text.toString()
     };
-    // if (phoneAuthDataProvider.phoneNumberController.text != '') {
-    //   var result = await phoneAuthDataProvider.sendOtp(body);
-    //   if (result['otp'] != 'REJECTED') {
-    //     Flushbar(
-    //       title: "OTP SEND",
-    //       message: 'OTP SEND',
-    //       duration: Duration(seconds: 5),
-    //       backgroundColor: Colors.green,
-    //       flushbarPosition: FlushbarPosition.BOTTOM,
-    //       icon: Icon(
-    //         Icons.send,
-    //         color: Colors.white,
-    //       ),
-    //     )..show(context);
+    if (phoneAuthDataProvider.phoneNumberController.text != '') {
+      var result = await phoneAuthDataProvider.sendOtp(body);
+      if (result['otp'] != 'REJECTED') {
+        Flushbar(
+          title: "OTP SEND",
+          message: 'OTP SEND',
+          duration: Duration(seconds: 5),
+          backgroundColor: Colors.green,
+          flushbarPosition: FlushbarPosition.BOTTOM,
+          icon: Icon(
+            Icons.send,
+            color: Colors.white,
+          ),
+        )..show(context);
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (BuildContext context) => PhoneAuthVerify(
@@ -275,19 +275,19 @@ class _PhoneAuthGetPhoneState extends State<PhoneAuthGetPhone> {
             ),
           ),
         );
-    //   } else {
-    //     Flushbar(
-    //       title: "OTP NOT SEND",
-    //       message: result['otp'] + ' Invalid nomor telepon',
-    //       duration: Duration(seconds: 5),
-    //       backgroundColor: Colors.black,
-    //       flushbarPosition: FlushbarPosition.BOTTOM,
-    //       icon: Icon(
-    //         Icons.error,
-    //         color: Colors.white,
-    //       ),
-    //     )..show(context);
-    //   }
-    // }
+      } else {
+        Flushbar(
+          title: "OTP NOT SEND",
+          message: result['otp'] + ' Invalid nomor telepon',
+          duration: Duration(seconds: 5),
+          backgroundColor: Colors.black,
+          flushbarPosition: FlushbarPosition.BOTTOM,
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+        )..show(context);
+      }
+    }
   }
 }

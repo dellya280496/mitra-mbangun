@@ -144,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
                                                       maxLines: 1,
                                                       text: TextSpan(
                                                           style: TextStyle(
-                                                            fontSize: 16.0,
+                                                            fontSize: 12.0,
                                                             color: Colors.white,
                                                             fontWeight: FontWeight.w800,
                                                           ),

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>279302484265-t1ecaon0p998ec0rrprvp07l7r3i9535.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.279302484265-t1ecaon0p998ec0rrprvp07l7r3i9535</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>279302484265-1saaisvmouicn51g4o6ln1ni49ho79b9.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC-ZCnSxSisQnRTovcmqlpWtHbnzHtImBw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>279302484265</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.m-bangun.mitra</string>
+	<key>PROJECT_ID</key>
+	<string>m-bangun</string>
+	<key>STORAGE_BUCKET</key>
+	<string>m-bangun.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:279302484265:ios:205e8a1a2dda51cb06c738</string>
+	<key>DATABASE_URL</key>
+	<string>https://m-bangun.firebaseio.com</string>
+</dict>
+</plist>
